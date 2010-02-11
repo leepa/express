@@ -1,5 +1,6 @@
 %h1 Chat
 %img.bubble{ src: '/public/images/bubble.png' }
+= this.sayGreeting()
 %ul#messages
   :each msg in messages
     %li= msg

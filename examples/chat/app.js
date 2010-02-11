@@ -23,6 +23,13 @@ get('/', function(){
 })
 
 get('/chat', function(){
+  
+  var greet = { 
+    greeting: "Yo, yo, yo!",
+    sayGreeting: function () { return this.greeting }
+  }
+  View.helper('sayGreeting', greet.sayGreeting, greet)
+  
   this.render('chat.haml.html', {
     locals: {
       title: 'Chat',
