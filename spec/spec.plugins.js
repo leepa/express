@@ -3,7 +3,7 @@ var mime = require('express/mime')
 
 CSSColors = Plugin.extend({
   extend: {
-    init: function() {
+    constructor: function() {
       this.initialized = true
     }
   },
