@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Project - Tagline
+    %title Express - Node.js Web Development Framework
     %link{ :rel => 'stylesheet', :href => 'style.css' }
   %body
     %a{ :href => PROJECT_URL }
@@ -14,10 +14,36 @@
       %a{ :href => PROJECT_URL + '/downloads' }
         %img{ :src => 'http://github.com/images/modules/download/tar.png' }
 
-    = title 'Project', 'tagline'
+    = title 'Express', ''
  
     %p
-      Description and body
+      Express is a 
+      %a{ :href => 'http://nodejs.org' } Node.js
+      web development framework created by
+      %a{ :href => 'http://twitter.com/tjholowaychuk' } TJ Holowaychuk
+      and is loosely based on the 
+      %a{ :href => 'http://sinatrarb.com' } Sinatra
+      framework for Ruby. Express aims to be one of the fastest and most
+      user friendly frameworks on the web, by combining the RESTful Sinatra
+      DSL with the raw asynchronous power of node.js.
+      
+    %h2 Features
+    %ul
+      %li RESTful DSL
+      %li Ultra High Performance
+      %li Multi-part file upload support
+      %li Cookie support
+      %li Session support
+      %li Redirection helpers
+      %li Environment based configuration
+      %li Light-weight class implementation
+      %li Persistent flash messages
+      %li Route passing
+      %li MIME helpers
+      %li Logger plugin with many formats
+      %li View support (haml, sass, etc)
+      %li Cache API
+      %li RESTful HTTP client
  
     .footer
       this mini site brought to you by : 

@@ -7,4 +7,4 @@ def project_url username, project
   "http://github.com/#{username}/#{project}"
 end
 
-PROJECT_URL = project_url('username', 'project')
+PROJECT_URL = project_url('visionmedia', 'express')
