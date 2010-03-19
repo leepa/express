@@ -1,60 +1,40 @@
  
+!dark = #474747
+ 
 =transitions
   :-webkit-transition-property opacity, -webkit-transform, color, background-color, padding
-  :-webkit-transition-duration 0.2s
+  :-webkit-transition-duration 0.1s
   :-webkit-transition-timing-function ease-out
- 
+
+html
+  :background #1c1c1c url(images/bg.tile.jpg)
+  
 body
-  :margin 30px 0
-  :font-family "Helvetica"
+  :margin 0
+  :font 14px/1.4 "Helvetica Neue", "Lucida Grande", "Arial"
   :font-size 14px
   :line-height 1.5
-  :color black
+  :-webkit-text-stroke 1px rgba(0, 0, 0, 0.1)
+  :-moz-text-stroke 1px rgba(0, 0, 0, 0.1)
+  :background url(images/bg.jpg) 50% 0 no-repeat
+  :color= !dark
+  
+*
+  :outline none
   
 a img
   :border none !important
   
 a
-  :text-decoration none
   :font-weight bold
-  :color black
+  :color white
   
   &:hover
     :color #0091FF
     
-ul li a
-  +transitions
-  
-  &:hover
-    :padding 0 8px
-  
 h1
-  :padding 80px 0 10px
-  :font-size 50px
-  
-  em 
-    :font-style normal
-    :font-size 15px
-    
-h2
-  :margin 40px 0 15px 0
-  :padding-top 20px
-  :border 0
-  :border-top 1px solid #aaa
-  :font-size 20px
-  
-pre
-  :display block
-  :padding 15px 20px
-  :background black
-  :font-family "Bitstream Vera Sans Mono"
-  :white-space pre
-  :color white
-  
-.footer
-  :padding-top 30px
-  :text-align center
-  :font-style italic
+  :margin 0
+  :padding 0
  
 #ribbon
   :position absolute
@@ -63,15 +43,4 @@ pre
  
 #container
   :margin 0 auto
-  :width 700px
-  
-#download
-  :float right
- 
-  a img
-    +transitions
-   
-    &:hover
-      :z-index 10
-      :-webkit-transform translate(10px, -10px) scale(1.05)
-      :opacity 0.65
+  :width 800px
