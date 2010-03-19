@@ -16,7 +16,7 @@
         High performance, high class web development for
         <a href='http://nodejs.org'>Node.js</a>
       </p>
-      <pre><code>get('/', function(){&#x000A;  this.contentType('html')&#x000A;  return '&lt;h1&gt;Welcome To Express&lt;/h1&gt;'&#x000A;})&#x000A;&#x000A;run()</code></pre>
+      <pre><code>require(<span class="string">'express'</span>)&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.contentType(<span class="string">'html'</span>)&#x000A;  <span class="keyword">return</span> <span class="string">'&lt;h1&gt;Welcome To Express&lt;/h1&gt;'</span>&#x000A;})&#x000A;&#x000A;run()</code></pre>
       <h2>Features</h2>
       <ul>
         <li>RESTful DSL</li>
