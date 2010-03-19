@@ -12,22 +12,15 @@
   <div id='wrapper'>
     <div id='container'>
       <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
-      <pre><code>$ kiwi -v install express</code></pre>
-      <p>
-        Express is a
+      <p id='tagline'>
+        High performance, high class web development for
         <a href='http://nodejs.org'>Node.js</a>
-        web development framework created by
-        <a href='http://twitter.com/tjholowaychuk'>TJ Holowaychuk</a>
-        and is loosely based on the
-        <a href='http://sinatrarb.com'>Sinatra</a>
-        framework for Ruby. Express aims to be one of the fastest and most
-        user friendly frameworks on the web, by combining the RESTful Sinatra
-        DSL with the raw asynchronous power of node.js.
       </p>
+      <pre><code>get('/', function(){&#x000A;  this.contentType('html')&#x000A;  return '&lt;h1&gt;Welcome To Express&lt;/h1&gt;'&#x000A;})&#x000A;&#x000A;run()</code></pre>
       <h2>Features</h2>
       <ul>
         <li>RESTful DSL</li>
-        <li>Ultra High Performance</li>
+        <li>Focus on high performance</li>
         <li>Multi-part file upload support</li>
         <li>Cookie support</li>
         <li>Session support</li>

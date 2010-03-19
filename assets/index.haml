@@ -11,24 +11,17 @@
     
       %a#logo{ :href => 'http://github.com/visionmedia/express' } Express
     
-      %pre
-        %code $ kiwi -v install express
-    
-      %p
-        Express is a 
+      %p#tagline
+        High performance, high class web development for
         %a{ :href => 'http://nodejs.org' } Node.js
-        web development framework created by
-        %a{ :href => 'http://twitter.com/tjholowaychuk' } TJ Holowaychuk
-        and is loosely based on the 
-        %a{ :href => 'http://sinatrarb.com' } Sinatra
-        framework for Ruby. Express aims to be one of the fastest and most
-        user friendly frameworks on the web, by combining the RESTful Sinatra
-        DSL with the raw asynchronous power of node.js.
+    
+      %pre
+        %code= snippit 'example.js'
         
       %h2 Features
       %ul
         %li RESTful DSL
-        %li Ultra High Performance
+        %li Focus on high performance
         %li Multi-part file upload support
         %li Cookie support
         %li Session support
