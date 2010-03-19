@@ -6,66 +6,69 @@
   %body
     %a{ :href => PROJECT_URL }
       %img#ribbon{ :src => 'http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png', :alt => 'Fork me on GitHub' }
- 
-  #container
-
-    = title 'Express', ''
- 
-    %p
-      Express is a 
-      %a{ :href => 'http://nodejs.org' } Node.js
-      web development framework created by
-      %a{ :href => 'http://twitter.com/tjholowaychuk' } TJ Holowaychuk
-      and is loosely based on the 
-      %a{ :href => 'http://sinatrarb.com' } Sinatra
-      framework for Ruby. Express aims to be one of the fastest and most
-      user friendly frameworks on the web, by combining the RESTful Sinatra
-      DSL with the raw asynchronous power of node.js.
-      
-    %h2 Features
-    %ul
-      %li RESTful DSL
-      %li Ultra High Performance
-      %li Multi-part file upload support
-      %li Cookie support
-      %li Session support
-      %li Redirection helpers
-      %li Environment based configuration
-      %li Light-weight class implementation
-      %li Persistent flash messages
-      %li Route passing
-      %li MIME helpers
-      %li Logger plugin with many formats
-      %li View support (haml, sass, etc)
-      %li Cache API
-      %li RESTful HTTP client
-      
-    %h2 Contributors
+  #wrapper
+    #container
     
-    %p The following are the major contributors (in no specific order).
+      %a#logo{ :href => 'http://github.com/visionmedia/express' } Express
     
-    %ul
-      %li TJ Holowaychuk (visionmedia)
-      %li Ciaran Jessup (ciaranj)
-      %li Aaron Heckmann (aheckmann)
+      %pre
+        %code $ kiwi -v install express
+    
+      %p
+        Express is a 
+        %a{ :href => 'http://nodejs.org' } Node.js
+        web development framework created by
+        %a{ :href => 'http://twitter.com/tjholowaychuk' } TJ Holowaychuk
+        and is loosely based on the 
+        %a{ :href => 'http://sinatrarb.com' } Sinatra
+        framework for Ruby. Express aims to be one of the fastest and most
+        user friendly frameworks on the web, by combining the RESTful Sinatra
+        DSL with the raw asynchronous power of node.js.
+        
+      %h2 Features
+      %ul
+        %li RESTful DSL
+        %li Ultra High Performance
+        %li Multi-part file upload support
+        %li Cookie support
+        %li Session support
+        %li Redirection helpers
+        %li Environment based configuration
+        %li Light-weight class implementation
+        %li Persistent flash messages
+        %li Route passing
+        %li MIME helpers
+        %li Logger plugin with many formats
+        %li View support (haml, sass, etc)
+        %li Cache API
+        %li RESTful HTTP client
+        
+      %h2 Contributors
       
-    %h2 More Information
+      %p The following are the major contributors (in no specific order).
+      
+      %ul
+        %li TJ Holowaychuk (visionmedia)
+        %li Ciaran Jessup (ciaranj)
+        %li Aaron Heckmann (aheckmann)
+        
+      %h2 More Information
+      
+      %ul
+        %li
+          Visit the
+          %a{ :href => 'http://wiki.github.com/visionmedia/express/' } Wiki
+        %li
+          Discuss the framework at the
+          %a{ :href => 'http://groups.google.com/group/express-js' } Google Group
+        %li
+          Follow
+          %a{ :href => 'http://twitter.com/tjholowaychuk' } tjholowaychuk
+          on twitter to keep up to date
+        %li
+          View the
+          %a{ :href => 'http://github.com/visionmedia/express' } Source
     
-    %ul
-      %li
-        Visit the
-        %a{ :href => 'http://wiki.github.com/visionmedia/express/' } Wiki
-      %li
-        Discuss the framework at the
-        %a{ :href => 'http://groups.google.com/group/express-js' } Google Group
-      %li
-        Follow
-        %a{ :href => 'http://twitter.com/tjholowaychuk' } tjholowaychuk
-        on twitter to keep up to date
-      %li
-        View the
-        %a{ :href => 'http://github.com/visionmedia/express' } Source
- 
-    .footer
-      Development of Express is funded by : 
-      %a{ :href => 'http://vision-media.ca' } Vision Media
+      .footer
+        Development of Express is funded by : 
+        %a{ :href => 'http://vision-media.ca' } Vision Media
