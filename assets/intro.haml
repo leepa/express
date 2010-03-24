@@ -65,6 +65,38 @@
       %pre
         %code= snippit 'intro.kiwi.js'
         
+      %h2 Views
+      
+      %p
+        The first thing we need to do is
+        tell Express what our application root is by
+        using the 
+        %em set()
+        function. In this case the directly in
+        which this file is executed, happens to be
+        our application root, this is
+        %em __dirname
+        \.
+        
+      %p
+        In order to render our view, we must understand
+        that routes are evaulated in context to the request
+        being served, so
+        %em this
+        references the current
+        %em Request
+        instance. We then call
+        %em Request#render()
+        with the name of our view, and pass
+        any options that we wish.
+        
+      %pre
+        %code= snippit 'intro.views.js'
+        
+      %p
+        Click for more information on 
+        %a{ :href => 'plugins/views.html' } Views
+        
       %h2 Running An Application
       
       %p To run our application simply pass node the path to your javascript app:

@@ -55,6 +55,35 @@
         and even supports version resolution (left out in this example).
       </p>
       <pre><code>var kiwi = require(<span class="string">'kiwi'</span>)&#x000A;kiwi.require(<span class="string">'express'</span>)&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'/hello/world'</span>)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/hello/world'</span>, <span class="keyword">function</span>(){&#x000A;  <span class="keyword">return</span> <span class="string">'Hello World'</span>&#x000A;})&#x000A;&#x000A;run()</code></pre>
+      <h2>Views</h2>
+      <p>
+        The first thing we need to do is
+        tell Express what our application root is by
+        using the
+        <em>set()</em>
+        function. In this case the directly in
+        which this file is executed, happens to be
+        our application root, this is
+        <em>__dirname</em>
+        .
+      </p>
+      <p>
+        In order to render our view, we must understand
+        that routes are evaulated in context to the request
+        being served, so
+        <em>this</em>
+        references the current
+        <em>Request</em>
+        instance. We then call
+        <em>Request#render()</em>
+        with the name of our view, and pass
+        any options that we wish.
+      </p>
+      <pre><code>require.paths.unshift(<span class="string">'path/to/express/lib'</span>)&#x000A;require(<span class="string">'express'</span>)&#x000A;   &#x000A;configure(<span class="keyword">function</span>(){&#x000A;  set(<span class="string">'root'</span>, __dirname)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'/hello/world'</span>)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/hello/world'</span>, <span class="keyword">function</span>(){&#x000A;  this.render(<span class="string">'title.haml.html'</span>, {&#x000A;    layout: false,&#x000A;    locals: {&#x000A;      title: <span class="string">'Hello World'</span>&#x000A;    }&#x000A;  })&#x000A;})&#x000A;&#x000A;run()</code></pre>
+      <p>
+        Click for more information on
+        <a href='plugins/views.html'>Views</a>
+      </p>
       <h2>Running An Application</h2>
       <p>To run our application simply pass node the path to your javascript app:</p>
       <pre><code>$ node app.js</code></pre>
