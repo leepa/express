@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Plugins</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a class='active' href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Plugins</h2>
+      <p>
+        Express does not use "middleware" however
+        <em>Plugins</em>
+        take a similar form, allowing Express to
+        respond to events, and extend core.
+      </p>
+      <h2>Using Plugins</h2>
+      <p>
+        To use a plugin simply pass it to the
+        <em>use()</em>
+        function, after which each request will
+        instantiate a new instance of your plugin,
+        allowing it to perform request-specific
+        processing.
+      </p>
+      <p>
+        For example using the core
+        <em>Logger</em>
+        plugin we can require and pass it to
+        <em>use()</em>
+        .
+      </p>
+      <pre><code>use(require('express/plugins/logger').Logger)</code></pre>
+      <p>As you can see, this is a bit messy; we can globalize these plugins by using</p>
+      <pre><code>require('express/plugins')</code></pre>
+      <p>after which we can simply:</p>
+      <pre><code>use(Logger)</code></pre>
+      <p>
+        The
+        <em>use()</em>
+        function may receive the same plugin several
+        times, however the last will always take precedence.
+        This is useful for example when core uses
+        <em>Cache</em>
+        and
+        <em>View</em>
+        by default, however in your configurations you
+        may wish to pass options like so:
+      </p>
+      <pre><code>use(Cache, { with: options })</code></pre>
+      <h2>Creating Plugins</h2>
+      <h2>Core Required Plugins</h2>
+      <h2>Core Optional Plugins</h2>
+    </div>
+  </div>
+</html>
