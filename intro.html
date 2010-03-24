@@ -55,6 +55,9 @@
         and even supports version resolution (left out in this example).
       </p>
       <pre><code>var kiwi = require(<span class="string">'kiwi'</span>)&#x000A;kiwi.require(<span class="string">'express'</span>)&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'/hello/world'</span>)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/hello/world'</span>, <span class="keyword">function</span>(){&#x000A;  <span class="keyword">return</span> <span class="string">'Hello World'</span>&#x000A;})&#x000A;&#x000A;run()</code></pre>
+      <h2>Running An Application</h2>
+      <p>To run our application simply pass node the path to your javascript app:</p>
+      <pre><code>$ node app.js</code></pre>
     </div>
   </div>
 </html>
