@@ -62,19 +62,42 @@
       </p>
       <pre><code>use(Cache, { with: options })</code></pre>
       <h2>Writting Plugins</h2>
-      <p>
-        Below is a basic profiler plugin example.
-        First we extend the
-        <em>Plugin</em>
-        "class", and provide a few event handlers,
-        in which we track the duration of a request
-        by using the
-        <em>request</em>
-        and
-        <em>response</em>
-        event handlers.
-      </p>
-      <pre><code>exports.Profiler = Plugin.extend({&#x000A;  on: {&#x000A;    request: <span class="keyword">function</span>(event) {&#x000A;      this.start = Number(new Date)  &#x000A;    },&#x000A;    &#x000A;    response: <span class="keyword">function</span>(event) {&#x000A;      sys.puts(Number(new Date) - this.start + <span class="string">' ms'</span>)&#x000A;    }&#x000A;  }&#x000A;})</code></pre>
+      <h3>Synchronous Example</h3>
+      <div class='sect'>
+        <p>
+          Below is a basic profiler plugin example.
+          First we extend the
+          <em>Plugin</em>
+          "class", and provide a few event handlers,
+          in which we track the duration of a request
+          by using the
+          <em>request</em>
+          and
+          <em>response</em>
+          event handlers.
+        </p>
+        <pre><code>exports.Profiler = Plugin.extend({&#x000A;  on: {&#x000A;    request: <span class="keyword">function</span>(event) {&#x000A;      this.start = Number(new Date)  &#x000A;    },&#x000A;    &#x000A;    response: <span class="keyword">function</span>(event) {&#x000A;      sys.puts(Number(new Date) - this.start + <span class="string">' ms'</span>)&#x000A;    }&#x000A;  }&#x000A;})</code></pre>
+      </div>
+      <h3>Asynchronous Example</h3>
+      <div class='sect'>
+        <p>
+          Below we have an async example of a plugin,
+          where
+          <em>someAsyncFunction()</em>
+          performs an async task such as
+          IO, HTTP requests, DB interactions, etc.
+        </p>
+        <p>
+          To indicate to Express that this event handler
+          will be async, we must return
+          <em>true</em>
+          explicitly, and accept a
+          <em>callback</em>
+          function which should be called
+          when your process has completed.
+        </p>
+        <pre><code>exports.AsyncDependencyExample = Plugin.extend({&#x000A;  on: {&#x000A;    request: <span class="keyword">function</span>(event, callback) {&#x000A;      someAsyncFunction(<span class="keyword">function</span>(){&#x000A;        callback()&#x000A;      })&#x000A;      <span class="keyword">return</span> true  &#x000A;    }&#x000A;  }&#x000A;})</code></pre>
+      </div>
       <h2>Core Required Plugins</h2>
       <h2>Core Optional Plugins</h2>
     </div>
