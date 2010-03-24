@@ -33,6 +33,29 @@
         .
       </p>
       <h2>Rendering Views</h2>
+      <h3>Layouts</h3>
+      <div class='sect'>
+        <p>
+          Calling
+          <em>Request#render()</em>
+          without the
+          <em>layout</em>
+          option explicitly set to
+          <em>false</em>
+          will attempt to render a layout
+          using the same engine that the
+          original view was rendered with such as
+          <em>layout.haml.html</em>
+          .
+        </p>
+        <p>
+          The contents of the view rendered
+          is passed to the layout as
+          <em>body</em>
+          as shown below.
+        </p>
+        <pre><code>%html&#x000A;  %body= body</code></pre>
+      </div>
       <h3>locals</h3>
       <div class='sect'>
         <p>

@@ -33,6 +33,31 @@
         
       %h2 Rendering Views
       
+      %h3 Layouts
+      
+      .sect
+        %p 
+          Calling 
+          %em Request#render()
+          without the
+          %em layout
+          option explicitly set to
+          %em false
+          will attempt to render a layout
+          using the same engine that the
+          original view was rendered with such as
+          %em layout.haml.html
+          \.
+          
+        %p 
+          The contents of the view rendered
+          is passed to the layout as 
+          %em body
+          as shown below.
+          
+        %pre
+          %code= snippit 'layout.haml'
+      
       %h3 locals
       .sect
         %p
