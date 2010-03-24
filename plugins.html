@@ -26,6 +26,56 @@
         <em>Plugins</em>
         take a similar form, allowing Express to
         respond to events, and extend core.
+        <h2>Core Required Plugins</h2>
+        <ul>
+          <li>
+            <a href='plugins.view.html'>View</a>
+            - handles view rendering
+          </li>
+          <li>
+            <a href='plugins.redirect.html'>Redirect</a>
+            - provides redirection support
+          </li>
+          <li>
+            <a href='plugins.body-decoder.html'>BodyDecoder</a>
+            - automatically decodes common request bodies
+          </li>
+          <li>
+            <a href='plugins.cache.html'>Cache</a>
+            - provides unified caching api with default memory store
+          </li>
+        </ul>
+        <h2>Core Optional Plugins</h2>
+        <ul>
+          <li>
+            <a href='plugins.logger.html'>Logger</a>
+            - provides several request logging formats
+          </li>
+          <li>
+            <a href='plugins.content-length.html'>ContentLength</a>
+            - automatically assigns the Content-Length response header
+          </li>
+          <li>
+            <a href='plugins.method-override.html'>MethodOverride</a>
+            - allows RESTful route support via faux HTTP method
+          </li>
+          <li>
+            <a href='plugins.hooks.html'>Hooks</a>
+            - provides before() and after() functions to act as request / response handlers
+          </li>
+          <li>
+            <a href='plugins.cookie.html'>Cookie</a>
+            - provides low-level HTTP cookie support
+          </li>
+          <li>
+            <a href='plugins.session.html'>Session</a>
+            - persistent session data with plug-able data store, with default memory store
+          </li>
+          <li>
+            <a href='plugins.flash.html'>Flash</a>
+            - provides persistent notification queue
+          </li>
+        </ul>
       </p>
       <h2>Using Plugins</h2>
       <p>
@@ -98,57 +148,6 @@
         </p>
         <pre><code>exports.AsyncDependencyExample = Plugin.extend({&#x000A;  on: {&#x000A;    request: <span class="keyword">function</span>(event, callback) {&#x000A;      someAsyncFunction(<span class="keyword">function</span>(){&#x000A;        callback()&#x000A;      })&#x000A;      <span class="keyword">return</span> true  &#x000A;    }&#x000A;  }&#x000A;})</code></pre>
       </div>
-      <h2>Core Required Plugins</h2>
-      <ul>
-        <li>
-          <a href='plugins.view.html'>View</a>
-          - handles view rendering
-        </li>
-        <li>
-          <a href='plugins.redirect.html'>Redirect</a>
-          - provides redirection support
-        </li>
-        <li>
-          <a href='plugins.body-decoder.html'>BodyDecoder</a>
-          - automatically decodes common request bodies
-        </li>
-        <li>
-          <a href='plugins.cache.html'>Cache</a>
-          - provides unified caching api with default memory store
-        </li>
-      </ul>
-      <h2>Core Optional Plugins</h2>
-      <ul>
-        <li>
-          <a href='plugins.logger.html'>Logger</a>
-          - provides several request logging formats
-        </li>
-        <li>
-          <a href='plugins.content-length.html'>ContentLength</a>
-          - automatically assigns the Content-Length response header
-        </li>
-        <li>
-          <a href='plugins.method-override.html'>MethodOverride</a>
-          - allows RESTful route support via faux HTTP method using
-          <em>_method</em>
-        </li>
-        <li>
-          <a href='plugins.hooks.html'>Hooks</a>
-          - provides before() and after() functions to act as request / response handlers
-        </li>
-        <li>
-          <a href='plugins.cookie.html'>Cookie</a>
-          - provides low-level HTTP cookie support
-        </li>
-        <li>
-          <a href='plugins.session.html'>Session</a>
-          - persistent session data with plug-able data store, with default memory store
-        </li>
-        <li>
-          <a href='plugins.flash.html'>Flash</a>
-          - provides persistent notification queue
-        </li>
-      </ul>
     </div>
   </div>
 </html>
