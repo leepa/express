@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Settings</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a class='active' href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Settings</h2>
+      <p>
+        To fetch a setting, simply call
+        <em>set()</em>
+        with a single arguments.
+      </p>
+      <pre><code>set('views') // => './views'</code></pre>
+      <p>
+        To change or apply a setting simply call
+        with a second argument.
+      </p>
+      <pre><code>set('views', __dirname + '/templates')</code></pre>
+      <h2>Deferred Settings</h2>
+      <p>
+        Functions may be passed as the second argument
+        to defer setting execution, which will be invoked
+        each time
+        <em>set()</em>
+        is called with a single argument.
+      </p>
+      <p>
+        When referencing another setting deferred execution
+        is ideal, as these settings may have changed by
+        the time they are actually needed.
+      </p>
+      <pre><code>set(<span class="string">'views'</span>, <span class="keyword">function</span>(){&#x000A;  <span class="keyword">return</span> set(<span class="string">'root'</span>) + <span class="string">'/template'</span>&#x000A;})</code></pre>
+      <h2>Environment Specific Configuration</h2>
+      <p>
+        The
+        <em>configure()</em>
+        function allows us to specify settings
+        and other routines used by all, or only
+        specific environments.
+      </p>
+      <p>
+        When
+        <em>configure()</em>
+        is not passed an environment name it
+        will be called regardless of the environment.
+      </p>
+      <pre><code>configure(<span class="keyword">function</span>(){&#x000A;  sys.puts(<span class="string">'all'</span>)&#x000A;})&#x000A;&#x000A;configure(<span class="string">'test'</span>, <span class="keyword">function</span>(){&#x000A;  sys.puts(<span class="string">'test'</span>)&#x000A;})&#x000A;&#x000A;configure(<span class="string">'foo'</span>, <span class="keyword">function</span>(){&#x000A;  sys.puts(<span class="string">'foo'</span>)&#x000A;})&#x000A;&#x000A;configure(<span class="string">'test'</span>)&#x000A;// =&gt; &quot;all&quot;&#x000A;// =&gt; &quot;test&quot;&#x000A;&#x000A;configure(<span class="string">'foo'</span>)&#x000A;// =&gt; &quot;all&quot;&#x000A;// =&gt; &quot;foo&quot;</code></pre>
+      <h2>Default Core Configuration</h2>
+      <p>Below is the default configuration found within core.</p>
+      <pre><code>configure(<span class="keyword">function</span>(){&#x000A;  use(require(<span class="string">'express/plugins/view'</span>).View)&#x000A;  use(require(<span class="string">'express/plugins/cache'</span>).Cache)&#x000A;  use(require(<span class="string">'express/plugins/redirect'</span>).Redirect)&#x000A;  use(require(<span class="string">'express/plugins/body-decoder'</span>).BodyDecoder)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'development'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'helpful 404'</span>)&#x000A;  enable(<span class="string">'show exceptions'</span>)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'test'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'throw exceptions'</span>)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'production'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'cache view contents'</span>)&#x000A;  enable(<span class="string">'cache view partials'</span>)&#x000A;  enable(<span class="string">'cache static files'</span>)&#x000A;})</code></pre>
+    </div>
+  </div>
+</html>
