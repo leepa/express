@@ -1,0 +1,134 @@
+!!!
+%html
+  %head
+    %title Express - Plugins - Views
+    %link{ :rel => 'stylesheet', :href => 'style.css' }
+  %body
+    %a{ :href => PROJECT_URL }
+      %img#ribbon{ :src => 'http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png', :alt => 'Fork me on GitHub' }
+  #wrapper
+    #container
+    
+      %a#logo{ :href => 'http://github.com/visionmedia/express' } Express
+    
+      %ul#menu
+        %li
+          %a{ :href => 'index.html' } Home
+          %a{ :href => 'intro.html' } Intro
+          %a{ :href => 'settings.html' } Settings
+          %a.active{ :href => 'plugins.html' } Plugins
+    
+      %h2 Views
+      
+      %p
+        The Views plugin is required by core, and
+        handles the rendering of content such as
+        HTML, and CSS and provides the
+        %em Request
+        object with the methods
+        %em Request#render()
+        and 
+        %em Request#partial()
+        \.
+        
+      %h2 Rendering Views
+      
+      %h3 Layouts
+      
+      .sect
+        %p 
+          Calling 
+          %em Request#render()
+          without the
+          %em layout
+          option explicitly set to
+          %em false
+          will attempt to render a layout
+          using the same engine that the
+          original view was rendered with such as
+          %em layout.haml.html
+          \.
+          
+        %p 
+          The contents of the view rendered
+          is passed to the layout as 
+          %em body
+          as shown below.
+          
+        %pre
+          %code= snippit 'layout.haml'
+      
+      %h3 locals
+      .sect
+        %p
+          Many template engines allow for local variables to be passed,
+          which then become globally available to the template.
+        
+        %pre
+          %code= snippit 'view.local.js'
+          
+        %p
+          Below is a sample
+          %em HAML
+          template with locals passed.
+          
+        %pre
+          %code= snippit 'view.local.haml'
+          
+      %h3 context
+      .sect
+        %p
+          Many template engines will also allow you to pass an 
+          object in which the template will be evaluated against.
+          Unless explicitly set this defaults to the
+          %em Request
+          instance itself.
+        
+        %pre
+          %code= snippit 'view.context.js'
+          
+        %p
+          This
+          %em HAML
+          template shows that the
+          %em this
+          keyword now references the "user"
+          object passed.
+          
+        %pre
+          %code= snippit 'view.context.haml'
+        
+      %h2 Naming Views
+        
+      %p
+        Currently view names must conform to the
+        following format:
+        %em NAME.ENGINE.TYPE
+        where 
+        %em NAME
+        represents the arbtrary name of the file
+        such as "user",
+        %em ENGINE
+        represents the template engine such as "haml",
+        or "sass", and finally
+        %em TYPE
+        represents the mime type such as "html", "css",
+        which the View module uses to automatically
+        assign the
+        %em Content-Type
+        header.
+        
+      %h2 How Express Supports Arbitrary Engines
+      
+      %p
+        When the naming convention described above is used,
+        Express can 
+        %em require(ENGINE)
+        and call the 
+        %em render(content, options)
+        method exported by the engine. This means that for
+        a template engine to comply with the View system, it
+        must export a function which looks somthing like below:
+        
+      %pre
+        %code= snippit 'exports.render.js'

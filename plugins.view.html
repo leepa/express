@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Plugins - Views</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a class='active' href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Views</h2>
+      <p>
+        The Views plugin is required by core, and
+        handles the rendering of content such as
+        HTML, and CSS and provides the
+        <em>Request</em>
+        object with the methods
+        <em>Request#render()</em>
+        and
+        <em>Request#partial()</em>
+        .
+      </p>
+      <h2>Rendering Views</h2>
+      <h3>Layouts</h3>
+      <div class='sect'>
+        <p>
+          Calling
+          <em>Request#render()</em>
+          without the
+          <em>layout</em>
+          option explicitly set to
+          <em>false</em>
+          will attempt to render a layout
+          using the same engine that the
+          original view was rendered with such as
+          <em>layout.haml.html</em>
+          .
+        </p>
+        <p>
+          The contents of the view rendered
+          is passed to the layout as
+          <em>body</em>
+          as shown below.
+        </p>
+        <pre><code>%html&#x000A;  %body= body</code></pre>
+      </div>
+      <h3>locals</h3>
+      <div class='sect'>
+        <p>
+          Many template engines allow for local variables to be passed,
+          which then become globally available to the template.
+        </p>
+        <pre><code>get(<span class="string">'/user/:id'</span>, <span class="keyword">function</span>(id){&#x000A;  this.render(<span class="string">'user.haml.html'</span>, {&#x000A;    locals: {&#x000A;      user: { id: id, name: <span class="string">'tj'</span> }&#x000A;    }&#x000A;  })&#x000A;})</code></pre>
+        <p>
+          Below is a sample
+          <em>HAML</em>
+          template with locals passed.
+        </p>
+        <pre><code>%h1&#x000A;  %a{ :href =&gt; <span class="string">'/user/'</span> + user.id }= user.name</code></pre>
+      </div>
+      <h3>context</h3>
+      <div class='sect'>
+        <p>
+          Many template engines will also allow you to pass an
+          object in which the template will be evaluated against.
+          Unless explicitly set this defaults to the
+          <em>Request</em>
+          instance itself.
+        </p>
+        <pre><code>get(<span class="string">'/user/:id'</span>, <span class="keyword">function</span>(id){&#x000A;  this.render(<span class="string">'user.haml.html'</span>, {&#x000A;    context: { id: id, name: <span class="string">'tj'</span> }&#x000A;  })&#x000A;})</code></pre>
+        <p>
+          This
+          <em>HAML</em>
+          template shows that the
+          <em>this</em>
+          keyword now references the "user"
+          object passed.
+        </p>
+        <pre><code>%h1&#x000A;  %a{ :href =&gt; <span class="string">'/user/'</span> + this.id }= this.name</code></pre>
+      </div>
+      <h2>Naming Views</h2>
+      <p>
+        Currently view names must conform to the
+        following format:
+        <em>NAME.ENGINE.TYPE</em>
+        where
+        <em>NAME</em>
+        represents the arbtrary name of the file
+        such as "user",
+        <em>ENGINE</em>
+        represents the template engine such as "haml",
+        or "sass", and finally
+        <em>TYPE</em>
+        represents the mime type such as "html", "css",
+        which the View module uses to automatically
+        assign the
+        <em>Content-Type</em>
+        header.
+      </p>
+      <h2>How Express Supports Arbitrary Engines</h2>
+      <p>
+        When the naming convention described above is used,
+        Express can
+        <em>require(ENGINE)</em>
+        and call the
+        <em>render(content, options)</em>
+        method exported by the engine. This means that for
+        a template engine to comply with the View system, it
+        must export a function which looks somthing like below:
+      </p>
+      <pre><code>exports.render = <span class="keyword">function</span>(content, options) {&#x000A;  <span class="keyword">return</span> content&#x000A;}</code></pre>
+    </div>
+  </div>
+</html>
