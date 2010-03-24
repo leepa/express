@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Introduction</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a class='active' href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Installation</h2>
+      <p>
+        Express and all of it's dependencies can be installed from
+        <a href='http://github.com/visionmedia/express'>Github</a>
+        by executing the following commands:
+      </p>
+      <pre><code>$ git clone git://github.com/visionmedia/express.git</code></pre>
+      <pre><code>$ cd express && git submodule update --init</code></pre>
+      <p>
+        Alternatively the
+        <a href='http://github.com/visionmedia/kiwi'>Kiwi</a>
+        package management system for nodejs can be installed, and
+        you may then install Express with the following command:
+      </p>
+      <pre><code>$ kiwi -v install express</code></pre>
+      <h2>Routing</h2>
+      <p>
+        The first thing we need to do is create a new file,
+        which in this example I will name
+        <em>app.js</em>
+        . The contents of
+        <em>app.js</em>
+        should look similar to below, where we have
+        "unshifted" the path to where we had previously
+        installed Express, so that node can find it.
+      </p>
+      <pre><code>require.paths.unshift(<span class="string">'path/to/express/lib'</span>)&#x000A;require(<span class="string">'express'</span>)&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'/hello/world'</span>)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/hello/world'</span>, <span class="keyword">function</span>(){&#x000A;  <span class="keyword">return</span> <span class="string">'Hello World'</span>&#x000A;})&#x000A;&#x000A;run()</code></pre>
+      <p>
+        Developers using
+        <em>Kiwi</em>
+        will need to use a slightly different approach shown
+        below. Kiwi require libraries that have been installed,
+        and even supports version resolution (left out in this example).
+      </p>
+      <pre><code>var kiwi = require(<span class="string">'kiwi'</span>)&#x000A;kiwi.require(<span class="string">'express'</span>)&#x000A;&#x000A;get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'/hello/world'</span>)&#x000A;})&#x000A;&#x000A;get(<span class="string">'/hello/world'</span>, <span class="keyword">function</span>(){&#x000A;  <span class="keyword">return</span> <span class="string">'Hello World'</span>&#x000A;})&#x000A;&#x000A;run()</code></pre>
+    </div>
+  </div>
+</html>

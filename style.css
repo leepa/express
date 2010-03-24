@@ -83,7 +83,7 @@ code {
   width: 550px; }
 
 #menu {
-  margin-left: 115px;
+  margin-left: 100px;
   padding: 0;
   padding-bottom: 30px; }
   #menu li {
@@ -102,7 +102,8 @@ code {
       -webkit-transition-property: opacity, -webkit-transform, color, background-color, padding, -webkit-box-shadow;
       -webkit-transition-duration: 0.15s;
       -webkit-transition-timing-function: ease-out; }
-      #menu li a:hover {
+      #menu li a:hover,
+      #menu li a.active {
         padding: 3px 20px;
         background: rgba(0,0,0,0.5); }
       #menu li a:active {

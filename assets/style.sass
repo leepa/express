@@ -105,7 +105,7 @@ code
   :width 550px
   
 #menu
-  :margin-left 115px
+  :margin-left 100px
   :padding 0
   :padding-bottom 30px
   li
@@ -121,9 +121,11 @@ code
       :-moz-border-radius 8px
       +dark-box-shadow
       +transitions
-      &:hover
+      &:hover,
+      &.active
         :padding 3px 20px
         :background rgba(0,0,0,0.5)
       &:active
         :background rgba(0,0,0,0.1)
         +light-box-shadow
+        
