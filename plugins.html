@@ -61,7 +61,20 @@
         may wish to pass options like so:
       </p>
       <pre><code>use(Cache, { with: options })</code></pre>
-      <h2>Creating Plugins</h2>
+      <h2>Writting Plugins</h2>
+      <p>
+        Below is a basic profiler plugin example.
+        First we extend the
+        <em>Plugin</em>
+        "class", and provide a few event handlers,
+        in which we track the duration of a request
+        by using the
+        <em>request</em>
+        and
+        <em>response</em>
+        event handlers.
+      </p>
+      <pre><code>exports.Profiler = Plugin.extend({&#x000A;  on: {&#x000A;    request: <span class="keyword">function</span>(event) {&#x000A;      this.start = Number(new Date)  &#x000A;    },&#x000A;    &#x000A;    response: <span class="keyword">function</span>(event) {&#x000A;      sys.puts(Number(new Date) - this.start + <span class="string">' ms'</span>)&#x000A;    }&#x000A;  }&#x000A;})</code></pre>
       <h2>Core Required Plugins</h2>
       <h2>Core Optional Plugins</h2>
     </div>

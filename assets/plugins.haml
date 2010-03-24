@@ -71,7 +71,22 @@
       %pre
         %code use(Cache, { with: options })
       
-      %h2 Creating Plugins
+      %h2 Writting Plugins
+    
+      %p
+        Below is a basic profiler plugin example.
+        First we extend the
+        %em Plugin
+        "class", and provide a few event handlers,
+        in which we track the duration of a request
+        by using the 
+        %em request
+        and
+        %em response
+        event handlers.
+      
+      %pre
+        %code= snippit 'plugin.example.js'
     
       %h2 Core Required Plugins
       
