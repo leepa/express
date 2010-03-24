@@ -31,6 +31,48 @@
         %em Request#partial()
         \.
         
+      %h2 Rendering Views
+      
+      %h3 locals
+      .sect
+        %p
+          Many template engines allow for local variables to be passed,
+          which then become globally available to the template.
+        
+        %pre
+          %code= snippit 'view.local.js'
+          
+        %p
+          Below is a sample
+          %em HAML
+          template with locals passed.
+          
+        %pre
+          %code= snippit 'view.local.haml'
+          
+      %h3 context
+      .sect
+        %p
+          Many template engines will also allow you to pass an 
+          object in which the template will be evaluated against.
+          Unless explicitly set this defaults to the
+          %em Request
+          instance itself.
+        
+        %pre
+          %code= snippit 'view.context.js'
+          
+        %p
+          This
+          %em HAML
+          template shows that the
+          %em this
+          keyword now references the "user"
+          object passed.
+          
+        %pre
+          %code= snippit 'view.context.haml'
+        
       %h2 Naming Views
         
       %p
@@ -50,3 +92,18 @@
         assign the
         %em Content-Type
         header.
+        
+      %h2 How Express Supports Arbitrary Engines
+      
+      %p
+        When the naming convention described above is used,
+        Express can 
+        %em require(ENGINE)
+        and call the 
+        %em render(content, options)
+        method exported by the engine. This means that for
+        a template engine to comply with the View system, it
+        must export a function which looks somthing like below:
+        
+      %pre
+        %code= snippit 'exports.render.js'

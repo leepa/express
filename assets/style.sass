@@ -52,10 +52,13 @@ a
     :text-decoration underline
     :opacity 0.8
     
-h1, h2
+h1, h2, h3
   :margin 25px 0 0 0
   :color white
   +dark-text-shadow
+  
+h3
+  :font-size 18px
   
 pre
   :margin 20px 10px
@@ -71,6 +74,9 @@ code
   
 .clear
   :clear both
+  
+.sect
+  :margin-left 20px
   
 #logo
   :display block
@@ -128,4 +134,5 @@ code
       &:active
         :background rgba(0,0,0,0.1)
         +light-box-shadow
+
         

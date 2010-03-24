@@ -29,10 +29,13 @@ a {
     text-decoration: underline;
     opacity: 0.8; }
 
-h1, h2 {
+h1, h2, h3 {
   margin: 25px 0 0 0;
   color: white;
   text-shadow: 1px 2px 2px rgba(0,0,0,0.6); }
+
+h3 {
+  font-size: 18px; }
 
 pre {
   margin: 20px 10px;
@@ -49,6 +52,9 @@ code {
 
 .clear {
   clear: both; }
+
+.sect {
+  margin-left: 20px; }
 
 #logo {
   display: block;
