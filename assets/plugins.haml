@@ -113,5 +113,44 @@
         
       %h2 Core Required Plugins
       
+      %ul
+        %li
+          %a{ :href => 'plugins.view.html' } View
+          \- handles view rendering
+        %li
+          %a{ :href => 'plugins.redirect.html' } Redirect
+          \- provides redirection support
+        %li
+          %a{ :href => 'plugins.body-decoder.html' } BodyDecoder
+          \- automatically decodes common request bodies
+        %li
+          %a{ :href => 'plugins.cache.html' } Cache
+          \- provides unified caching api with default memory store
+      
       %h2 Core Optional Plugins
+      
+      %ul
+        %li
+          %a{ :href => 'plugins.logger.html' } Logger
+          \- provides several request logging formats
+        %li
+          %a{ :href => 'plugins.content-length.html' } ContentLength
+          \- automatically assigns the Content-Length response header
+        %li
+          %a{ :href => 'plugins.method-override.html' } MethodOverride
+          \- allows RESTful route support via faux HTTP method using
+          %em _method 
+        %li
+          %a{ :href => 'plugins.hooks.html' } Hooks
+          \- provides before() and after() functions to act as request / response handlers
+        %li
+          %a{ :href => 'plugins.cookie.html' } Cookie
+          \- provides low-level HTTP cookie support
+        %li
+          %a{ :href => 'plugins.session.html' } Session
+          \- persistent session data with plug-able data store, with default memory store 
+        %li
+          %a{ :href => 'plugins.flash.html' } Flash
+          \- provides persistent notification queue
+        
       
