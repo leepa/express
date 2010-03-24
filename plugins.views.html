@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Plugins - Views</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a class='active' href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Views</h2>
+      <p>
+        The Views plugin is required by core, and
+        handles the rendering of content such as
+        HTML, and CSS and provides the
+        <em>Request</em>
+        object with the methods
+        <em>Request#render()</em>
+        and
+        <em>Request#partial()</em>
+        .
+      </p>
+      <h2>Naming Views</h2>
+      <p>
+        Currently view names must conform to the
+        following format:
+        <em>NAME.ENGINE.TYPE</em>
+        where
+        <em>NAME</em>
+        represents the arbtrary name of the file
+        such as "user",
+        <em>ENGINE</em>
+        represents the template engine such as "haml",
+        or "sass", and finally
+        <em>TYPE</em>
+        represents the mime type such as "html", "css",
+        which the View module uses to automatically
+        assign the
+        <em>Content-Type</em>
+        header.
+      </p>
+    </div>
+  </div>
+</html>
