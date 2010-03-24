@@ -32,6 +32,14 @@
         with a second argument.
       </p>
       <pre><code>set('views', __dirname + '/templates')</code></pre>
+      <p>
+        Also then
+        <em>enable()</em>
+        and
+        <em>disable()</em>
+        functions are available which take only a single argument.
+      </p>
+      <pre><code>enable('show exceptions')</code></pre>
       <h2>Deferred Settings</h2>
       <p>
         Functions may be passed as the second argument
@@ -64,6 +72,105 @@
       <h2>Default Core Configuration</h2>
       <p>Below is the default configuration found within core.</p>
       <pre><code>configure(<span class="keyword">function</span>(){&#x000A;  use(require(<span class="string">'express/plugins/view'</span>).View)&#x000A;  use(require(<span class="string">'express/plugins/cache'</span>).Cache)&#x000A;  use(require(<span class="string">'express/plugins/redirect'</span>).Redirect)&#x000A;  use(require(<span class="string">'express/plugins/body-decoder'</span>).BodyDecoder)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'development'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'helpful 404'</span>)&#x000A;  enable(<span class="string">'show exceptions'</span>)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'test'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'throw exceptions'</span>)&#x000A;})&#x000A; &#x000A;configure(<span class="string">'production'</span>, <span class="keyword">function</span>(){&#x000A;  enable(<span class="string">'cache view contents'</span>)&#x000A;  enable(<span class="string">'cache view partials'</span>)&#x000A;  enable(<span class="string">'cache static files'</span>)&#x000A;})</code></pre>
+      <h2>Settings</h2>
+      <h3>root</h3>
+      <div class='sect'>
+        <p>Application root directory path of which other setting defaults are derived.</p>
+        <pre><code>set('root', __dirname)</code></pre>
+      </div>
+      <h3>views</h3>
+      <div class='sect'>
+        <p>
+          Path to views directory. Defaults to
+          <em>set('root') + '/views'</em>
+        </p>
+        <pre><code>set('views', __dirname + '/templates')</code></pre>
+      </div>
+      <h3>partials</h3>
+      <div class='sect'>
+        <p>
+          Path to view partials directory. Defaults to
+          <em>set('views') + '/partials'</em>
+        </p>
+        <pre><code>set('partials', __dirname + '/template-partials')</code></pre>
+      </div>
+      <h3>cache view contents</h3>
+      <div class='sect'>
+        <p>
+          When enabled all views will be loaded into memory, preventing
+          IO overhead, however removing the ability to make real-time
+          changes.
+        </p>
+        <pre><code>enable('cache view contents')</code></pre>
+      </div>
+      <h3>cache view partials</h3>
+      <div class='sect'>
+        <p>
+          When enabled all view partials will be loaded into memory, preventing
+          IO overhead, however removing the ability to make real-time
+          changes.
+        </p>
+        <pre><code>enable('cache view partials')</code></pre>
+      </div>
+      <h3>cache static files</h3>
+      <div class='sect'>
+        <p>
+          When enabled static files are cached using the Cache api.
+        </p>
+        <pre><code>enable('cache static files')</code></pre>
+      </div>
+      <h3>helpful 404</h3>
+      <div class='sect'>
+        <p>
+          When enabled the Express
+          <em>404 Not Found</em>
+          page will be shown.
+        </p>
+        <pre><code>enable('helpful 404')</code></pre>
+      </div>
+      <h3>show exceptions</h3>
+      <div class='sect'>
+        <p>
+          When enabled the Express
+          <em>500</em>
+          page displaying the call stack and other
+          useful information such as GET / POST params
+          will be shown.
+        </p>
+        <pre><code>enable('show exceptions')</code></pre>
+      </div>
+      <h3>throw exceptions</h3>
+      <div class='sect'>
+        <p>
+          When enabled uncaught exceptions
+          will propagate to the GLOBAL scope,
+          terminating the process.
+        </p>
+        <pre><code>enable('throw exceptions')</code></pre>
+      </div>
+      <h3>home</h3>
+      <div class='sect'>
+        <p>
+          Path representing your "home" page. Used by
+          <em>Request#redirect()</em>
+          as a first choice for
+          <em>this.redirect(home)</em>
+        </p>
+        <pre><code>set('home', '/blog/')</code></pre>
+      </div>
+      <h3>basepath</h3>
+      <div class='sect'>
+        <p>
+          Path representing the base of your application. Used by
+          <em>Request#redirect()</em>
+          as the second choice for
+          <em>this.redirect(home)</em>
+          and may be used by other APIs as well. If your entire site is running at
+          <em>/blog/</em>
+          this is most likely the setting you should use.
+        </p>
+        <pre><code>set('basepath', '/blog/')</code></pre>
+      </div>
     </div>
   </div>
 </html>

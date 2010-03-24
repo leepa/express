@@ -34,6 +34,16 @@
       
       %pre
         %code set('views', __dirname + '/templates')
+      
+      %p
+        Also then
+        %em enable()
+        and
+        %em disable()
+        functions are available which take only a single argument.
+        
+      %pre
+        %code enable('show exceptions')
         
       %h2 Deferred Settings
       
@@ -76,3 +86,104 @@
       
       %pre
         %code= snippit 'configure.core.js' 
+        
+      %h2 Settings
+      
+      %h3 root
+      .sect
+        %p Application root directory path of which other setting defaults are derived.
+        %pre
+          %code set('root', __dirname)
+          
+      %h3 views
+      .sect
+        %p
+          Path to views directory. Defaults to 
+          %em set('root') + '/views'
+        %pre
+          %code set('views', __dirname + '/templates')
+      
+      %h3 partials
+      .sect
+        %p
+          Path to view partials directory. Defaults to 
+          %em set('views') + '/partials'
+        %pre
+          %code set('partials', __dirname + '/template-partials')
+          
+      %h3 cache view contents
+      .sect
+        %p
+          When enabled all views will be loaded into memory, preventing
+          IO overhead, however removing the ability to make real-time
+          changes.
+        %pre
+          %code enable('cache view contents')
+          
+      %h3 cache view partials
+      .sect
+        %p
+          When enabled all view partials will be loaded into memory, preventing
+          IO overhead, however removing the ability to make real-time
+          changes.
+        %pre
+          %code enable('cache view partials')
+          
+      %h3 cache static files
+      .sect
+        %p
+          When enabled static files are cached using the Cache api.
+        %pre
+          %code enable('cache static files')
+     
+      %h3 helpful 404
+      .sect
+        %p
+          When enabled the Express
+          %em 404 Not Found
+          page will be shown.
+        %pre
+          %code enable('helpful 404')
+         
+      %h3 show exceptions
+      .sect
+        %p
+          When enabled the Express
+          %em 500 
+          page displaying the call stack and other
+          useful information such as GET / POST params
+          will be shown.
+        %pre
+          %code enable('show exceptions')
+      
+      %h3 throw exceptions
+      .sect
+        %p
+          When enabled uncaught exceptions
+          will propagate to the GLOBAL scope,
+          terminating the process.
+        %pre
+          %code enable('throw exceptions')
+         
+      %h3 home
+      .sect
+        %p
+          Path representing your "home" page. Used by 
+          %em Request#redirect()
+          as a first choice for
+          %em this.redirect(home)
+        %pre
+          %code set('home', '/blog/')
+          
+      %h3 basepath
+      .sect
+        %p
+          Path representing the base of your application. Used by
+          %em Request#redirect()
+          as the second choice for
+          %em this.redirect(home)
+          and may be used by other APIs as well. If your entire site is running at 
+          %em /blog/
+          this is most likely the setting you should use.
+        %pre
+          %code set('basepath', '/blog/')
