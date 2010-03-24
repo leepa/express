@@ -6,7 +6,7 @@
  
 =transitions
   :-webkit-transition-property opacity, -webkit-transform, color, background-color, padding
-  :-webkit-transition-duration 0.1s
+  :-webkit-transition-duration 0.15s
   :-webkit-transition-timing-function ease-out
   
 =dark-text-shadow
@@ -15,7 +15,11 @@
 =dark-box-shadow
   :-webkit-box-shadow 1px 2px 2px rgba(0,0,0,0.6)
   :-moz-box-shadow 1px 2px 2px rgba(0,0,0,0.6)
-
+  
+=light-box-shadow
+  :-webkit-box-shadow 1px 2px 2px rgba(0,0,0,0.4)
+  :-moz-box-shadow 1px 2px 2px rgba(0,0,0,0.4)
+  
 html
   :background #1c1c1c url(images/bg.tile.jpg)
   
@@ -65,10 +69,13 @@ pre
 code
   :font-family "Helvetica Neue", "Lucida Grande", "Arial"
   
+.clear
+  :clear both
+  
 #logo
   :display block
   :margin-left 30%
-  :margin-bottom 50px
+  :margin-bottom 30px
   :width 194px
   :height 51px
   :background url(images/logo.png) 0 0 no-repeat
@@ -96,3 +103,27 @@ code
   :margin 0 auto
   :padding-top 90px
   :width 550px
+  
+#menu
+  :margin-left 115px
+  :padding 0
+  :padding-bottom 30px
+  li
+    :display inline
+    :list-style none
+    a
+      :display block
+      :float left
+      :margin 0 2px
+      :padding 3px 15px
+      :background rgba(0,0,0,0.2)
+      :-webkit-border-radius 8px
+      :-moz-border-radius 8px
+      +dark-box-shadow
+      +transitions
+      &:hover
+        :padding 3px 20px
+        :background rgba(0,0,0,0.5)
+      &:active
+        :background rgba(0,0,0,0.1)
+        +light-box-shadow
