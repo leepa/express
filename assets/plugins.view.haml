@@ -46,7 +46,7 @@
           will attempt to render a layout
           using the same engine that the
           original view was rendered with such as
-          %em layout.html.haml
+          %em layout.haml.html
           \.
           
         %p 
@@ -58,46 +58,99 @@
         %pre
           %code= snippit 'layout.haml'
       
-      %h3 locals
+      %h3 Partials
+      
       .sect
+      
         %p
-          Many template engines allow for local variables to be passed,
-          which then become globally available to the template.
-        
-        %pre
-          %code= snippit 'view.local.js'
+          View partials are supported by
+          %em Request#partial()
+          which can be used inside of another
+          view to abstract a large view into
+          smaller chunks.
           
         %p
-          Below is a sample
-          %em HAML
-          template with locals passed.
+          Supposing we wish to render a list of comments,
+          our main view may look something like below. Although
+          this will work fine, it is a better idea to abstract
+          the idea of a "comment" into its own view.
           
         %pre
-          %code= snippit 'view.local.haml'
+          %code= snippit 'view.comments.haml'
           
-      %h3 context
+        %p
+          Our new file
+          %em views/partials/comment.html.haml
+          now contains the code to generate
+          a single comment only.
+          
+        %pre
+          %code= snippit 'view.partial.haml'
+          
+        %p
+          %em Request#partial()
+          accepts an option named "collection"
+          which is simply an array of items to iterate.
+          When given the partial will be rendered once
+          per item in the array. 
+          
+        %pre
+          %code this.partial('comment.html.haml', { collection: comments })
+          
+        %p
+          We may also pass the "as" option, which tells
+          %em Request#partial()
+          what to name the current item. In this example
+          we would access the comment via the variable "post"
+          rather than "comment".
+          
+        %pre
+          %code this.partial('comment.html.haml', { collection: comments, as: 'post' })
+      
+      %h3 Options
+      
       .sect
-        %p
-          Many template engines will also allow you to pass an 
-          object in which the template will be evaluated against.
-          Unless explicitly set this defaults to the
-          %em Request
-          instance itself.
-        
-        %pre
-          %code= snippit 'view.context.js'
+      
+        %h3 locals
+        .sect
+          %p
+            Many template engines allow for local variables to be passed,
+            which then become globally available to the template.
           
-        %p
-          This
-          %em HAML
-          template shows that the
-          %em this
-          keyword now references the "user"
-          object passed.
+          %pre
+            %code= snippit 'view.local.js'
+            
+          %p
+            Below is a sample
+            %em HAML
+            template with locals passed.
+            
+          %pre
+            %code= snippit 'view.local.haml'
+            
+        %h3 context
+        .sect
+          %p
+            Many template engines will also allow you to pass an 
+            object in which the template will be evaluated against.
+            Unless explicitly set this defaults to the
+            %em Request
+            instance itself.
           
-        %pre
-          %code= snippit 'view.context.haml'
-        
+          %pre
+            %code= snippit 'view.context.js'
+            
+          %p
+            This
+            %em HAML
+            template shows that the
+            %em this
+            keyword now references the "user"
+            object passed.
+            
+          %pre
+            %code= snippit 'view.context.haml'
+          
       %h2 Naming Views
         
       %p
