@@ -46,7 +46,7 @@
           will attempt to render a layout
           using the same engine that the
           original view was rendered with such as
-          %em layout.haml.html
+          %em layout.html.haml
           \.
           
         %p 
@@ -103,22 +103,22 @@
       %p
         Currently view names must conform to the
         following format:
-        %em NAME.ENGINE.TYPE
+        %em NAME.TYPE.ENGINE
         where 
         %em NAME
         represents the arbtrary name of the file
-        such as "user",
-        %em ENGINE
-        represents the template engine such as "haml",
-        or "sass", and finally
+        such as "user", while
         %em TYPE
         represents the mime type such as "html", "css",
         which the View module uses to automatically
         assign the
         %em Content-Type
-        header.
+        header, and finally
+        %em ENGINE
+        represents the template engine such as "haml",
+        or "sass".
         
-      %h2 How Express Supports Arbitrary Engines
+      %h2 How Express Supports View Engines
       
       %p
         When the naming convention described above is used,
