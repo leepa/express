@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Express - Plugins - Redirect</title>
+    <link href='style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <a href='http://github.com/visionmedia/express'>
+      <img alt='Fork me on GitHub' id='ribbon' src='http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png' />
+    </a>
+  </body>
+  <div id='wrapper'>
+    <div id='container'>
+      <a href='http://github.com/visionmedia/express' id='logo'>Express</a>
+      <ul id='menu'>
+        <li>
+          <a href='index.html'>Home</a>
+          <a href='intro.html'>Intro</a>
+          <a href='settings.html'>Settings</a>
+          <a class='active' href='plugins.html'>Plugins</a>
+        </li>
+      </ul>
+      <h2>Redirect</h2>
+      <p>
+        The Redirect plugin provides
+        <em>Request#redirect()</em>
+        as well as automatically assigning
+        <em>Request#home</em>
+        and
+        <em>Request#back</em>
+        .
+      </p>
+      <div class='sect'>
+        <h3>Basic Redirecting</h3>
+        <p>
+          The example below shows a simple redirect
+          to
+          <em>http://google.com</em>
+        </p>
+        <pre><code>get(<span class="string">'/search'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'http://google.com'</span>)&#x000A;})</code></pre>
+        <h3>Redirecting Back</h3>
+        <p>
+          The HTTP Referrer header is used to
+          redirect a user back to the page they
+          just came from.
+        </p>
+        <pre><code>get(<span class="string">'/'</span>, <span class="keyword">function</span>(){&#x000A;  this.redirect(<span class="string">'back'</span>)&#x000A;  // OR this.redirect(this.back)&#x000A;})</code></pre>
+        <h3>Redirecting Home</h3>
+        <p>
+          Redirecting to the home page uses
+          the same approach that redirecting "back" does.
+        </p>
+        <pre><code>post(<span class="string">'/login'</span>, <span class="keyword">function</span>(){&#x000A;  if (authenticationWasSuccessful)&#x000A;    this.redirect(<span class="string">'home'</span>)&#x000A;})</code></pre>
+      </div>
+    </div>
+  </div>
+</html>
