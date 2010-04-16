@@ -8,6 +8,8 @@ print = require('sys').puts
 quit = process.exit
 readFile = require('fs').readFileSync
 
+use = require('express/plugin').use
+
 function run(specs) {
   specs.forEach(function(spec){
     JSpec.exec('spec/spec.' + spec + '.js')
