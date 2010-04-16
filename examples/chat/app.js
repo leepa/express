@@ -1,29 +1,29 @@
 
 require.paths.unshift('lib')
-global.merge(require('express'))
+var ex = require('express')
 
 var messages = [],
     utils = require('express/utils'),
     http = require('express/http')
     
-configure(function(){
-  use(Logger)
-  use(MethodOverride)
-  use(ContentLength)
-  use(Cookie)
-  use(Cache, { lifetime: (5).minutes, reapInterval: (1).minute })
-  use(Session, { lifetime: (15).minutes, reapInterval: (1).minute })
-  use(Static)
-  set('root', __dirname)
+ex.configure(function(){
+  ex.use(ex.Logger)
+  ex.use(ex.MethodOverride)
+  ex.use(ex.ContentLength)
+  ex.use(ex.Cookie)
+  ex.use(ex.Cache, { lifetime: (5).minutes, reapInterval: (1).minute })
+  ex.use(ex.Session, { lifetime: (15).minutes, reapInterval: (1).minute })
+  ex.use(ex.Static)
+  ex.set('root', __dirname)
 })
 
-get('/', function(){ 
+ex.get('/', function(){ 
   this.pass('/chat')
 })
 
-get('/chat', function(){
+ex.get('/chat', function(){
   var self = this
-  Session.store.length(function(err, len){
+  ex.Session.store.length(function(err, len){
     self.render('chat.html.haml', {
       locals: {
         title: 'Chat',
@@ -35,7 +35,7 @@ get('/chat', function(){
   })
 })
 
-post('/chat', function(){
+ex.post('/chat', function(){
   this.session.name = this.param('name')
   messages
     .push(utils.escape(this.param('name')) + ': ' + utils.escape(this.param('message'))
@@ -44,7 +44,7 @@ post('/chat', function(){
   this.halt(200)
 })
 
-get('/chat/messages', function(){
+ex.get('/chat/messages', function(){
   var self = this,
       previousLength = messages.length,
       timer = setInterval(function(){
@@ -56,24 +56,24 @@ get('/chat/messages', function(){
   }, 100)
 })
 
-get('/*.css', function(file){
+ex.get('/*.css', function(file){
   this.render(file + '.css.sass', { layout: false })
 })
 
-get('/error/view', function(){
+ex.get('/error/view', function(){
   this.render('does.not.exist')
 })
 
-get('/error', function(){
+ex.get('/error', function(){
   throw new Error('oh noes!')
 })
 
-get('/simple', function(){
+ex.get('/simple', function(){
   return 'Hello :)'
 })
 
-get('/favicon.ico', function(){
+ex.get('/favicon.ico', function(){
   this.halt()
 })
 
-run()
+ex.run()
