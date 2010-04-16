@@ -2,9 +2,9 @@
 require.paths.unshift('spec', 'lib', 'spec/lib')
 require("jspec")
 require("express")
-require("express/spec")
 
 global.merge(require('express'))
+global.merge(require("express/spec"))
 
 function run(specs) {
   specs.forEach(function(spec){
