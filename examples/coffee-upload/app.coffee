@@ -1,7 +1,6 @@
 
 require.paths.unshift 'lib'
-require 'express'
-require 'express/plugins'
+global.merge require('express')
 
 sys: require 'sys'
 
