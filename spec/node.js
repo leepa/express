@@ -4,7 +4,7 @@ require("jspec")
 require("express")
 require("express/spec")
 
-use = require('express/plugin').use
+global.merge(require('express'))
 
 function run(specs) {
   specs.forEach(function(spec){
