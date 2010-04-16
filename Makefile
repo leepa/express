@@ -15,6 +15,9 @@ app: app-chat
 app-chat:
 	@$(NODE) examples/chat/app.js
 	
+app-chat-global:
+	@$(NODE) examples/chat-global/app.js
+	
 app-upload:
 	@$(NODE) examples/upload/app.js
 	
