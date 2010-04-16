@@ -4,10 +4,6 @@ require("jspec")
 require("express")
 require("express/spec")
 
-print = require('sys').puts
-quit = process.exit
-readFile = require('fs').readFileSync
-
 use = require('express/plugin').use
 
 function run(specs) {
