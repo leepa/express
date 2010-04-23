@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Express - Plugins - MethodOverride
+    %title Express - Plugins - ContentLength
     %link{ :rel => 'stylesheet', :href => 'style.css' }
   %body
     %a{ :href => PROJECT_URL }
@@ -18,15 +18,17 @@
           %a{ :href => 'settings.html' } Settings
           %a.active{ :href => 'plugins.html' } Plugins
     
-      %h2 MethodOverride
+      %h2 ContentLength
       
       %p
-        The MethodOverride plugin utilizes the
-        %em _method
-        param when set, and changes it internally so
-        that restul routing is possible. However if you
-        simply plan on using 
-        %em GET
-        and
-        %em POST
-        then you will not need MethodOverride.
+        The ContentLength plugin is extremely small and simple, it's task is
+        to assign the
+        %em Content-Length
+        header when not present. Keep in mind this is not possibly with
+        streamed data, so if you are streaming a file, you should 
+        %em stat()
+        it and then assign
+        %em Content-Length
+        with
+        %em stat.size
+        before streaming.

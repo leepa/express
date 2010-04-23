@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <title>Express - Plugins - MethodOverride</title>
+    <title>Express - Plugins - ContentLength</title>
     <link href='style.css' rel='stylesheet' />
   </head>
   <body>
@@ -20,17 +20,19 @@
           <a class='active' href='plugins.html'>Plugins</a>
         </li>
       </ul>
-      <h2>MethodOverride</h2>
+      <h2>ContentLength</h2>
       <p>
-        The MethodOverride plugin utilizes the
-        <em>_method</em>
-        param when set, and changes it internally so
-        that restul routing is possible. However if you
-        simply plan on using
-        <em>GET</em>
-        and
-        <em>POST</em>
-        then you will not need MethodOverride.
+        The ContentLength plugin is extremely small and simple, it's task is
+        to assign the
+        <em>Content-Length</em>
+        header when not present. Keep in mind this is not possibly with
+        streamed data, so if you are streaming a file, you should
+        <em>stat()</em>
+        it and then assign
+        <em>Content-Length</em>
+        with
+        <em>stat.size</em>
+        before streaming.
       </p>
     </div>
   </div>
