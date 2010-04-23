@@ -28,7 +28,6 @@ a {
   -webkit-transition-duration: 0.15s;
   -webkit-transition-timing-function: ease-out; }
   a:hover {
-    padding: 0 5px;
     opacity: 0.8; }
 
 h1, h2, h3 {
@@ -92,6 +91,7 @@ ul {
 
 #wrapper {
   width: 100%;
+  min-height: 800px;
   background: url(images/top.png) 0 0 repeat-x; }
 
 #container {
