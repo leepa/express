@@ -1,0 +1,32 @@
+!!!
+%html
+  %head
+    %title Express - Plugins - MethodOverride
+    %link{ :rel => 'stylesheet', :href => 'style.css' }
+  %body
+    %a{ :href => PROJECT_URL }
+      %img#ribbon{ :src => 'http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png', :alt => 'Fork me on GitHub' }
+  #wrapper
+    #container
+    
+      %a#logo{ :href => 'http://github.com/visionmedia/express' } Express
+    
+      %ul#menu
+        %li
+          %a{ :href => 'index.html' } Home
+          %a{ :href => 'intro.html' } Intro
+          %a{ :href => 'settings.html' } Settings
+          %a.active{ :href => 'plugins.html' } Plugins
+    
+      %h2 MethodOverride
+      
+      %p
+        The MethodOverride utilizes the
+        %em _method
+        param when set, and changes it internally so
+        that restul routing is possible. However if you
+        simply plan on using 
+        %em GET
+        and
+        %em POST
+        then you will not need MethodOverride.
