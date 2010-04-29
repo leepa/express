@@ -10,7 +10,7 @@ get('/', function(){
 })
 
 get('/hello/world', function(){
-  this.render('title.haml.html', {
+  this.render('title.html.haml', {
     layout: false,
     locals: {
       title: 'Hello World'
