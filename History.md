@@ -1,9 +1,11 @@
 
-0.14.1 / 2010-07-05
+1.0.0beta / 2010-07-15
 ==================
 
-  * Fixed ejs Buffer issue [bdotdub]
-  * Fixed querystring issue [isaacs]
+  * Re-write
+    - much faster
+    - much lighter
+    - Check [ExpressJS.com](http://expressjs.com) for migration guide and updated docs
 
 0.14.0 / 2010-06-15
 ==================
