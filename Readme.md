@@ -16,12 +16,11 @@
 
 npm:
 
-    $ npm install connect
     $ npm install express
 
-curl (or similar):
+curl:
 
-    $ curl -# http://github.com/visionmedia/express/raw/master/install.sh | sh
+    $ curl -# http://expressjs.com/install.sh | sh
 
 git clone, first update the submodules:
 
@@ -33,12 +32,16 @@ git clone, first update the submodules:
 
   * Robust routing
   * Redirection helpers
+  * Dynamic view helpers
+  * Content negotiation
   * Focus on high performance
   * View rendering and partials support
   * Environment based configuration
   * Session based flash notifications
-  * Built on [Connect](http://extjs.github.com/Connect)
+  * Built on [Connect](http://github.com/senchalabs/connect)
+  * High test coverage
   * Executable for generating applications quickly
+  * Application level view options
 
 Via Connect:
 
@@ -59,6 +62,7 @@ The following are the major contributors of Express (in no specific order).
   * TJ Holowaychuk ([visionmedia](http://github.com/visionmedia))
   * Ciaran Jessup ([ciaranj](http://github.com/ciaranj))
   * Aaron Heckmann ([aheckmann](http://github.com/aheckmann))
+  * Guillermo Rauch ([guille](http://github.com/guille))
 
 ## More Information
 
@@ -67,19 +71,19 @@ The following are the major contributors of Express (in no specific order).
   * [JavaScript Extensions &amp; Utilities](http://github.com/visionmedia/ext.js)
   * [JavaScript Sass](http://github.com/visionmedia/sass.js)
   * [JavaScript Haml](http://github.com/visionmedia/haml.js)
-  * [JavaScript Jade](http://github.com/visionmedia/jade) spiritual successor of Haml
+  * [JavaScript Jade](http://github.com/visionmedia/jade) Haml successor
+  * [Boilerplate](http://github.com/robrighter/node-boilerplate) boilerplate app supplying Express, Connect, Socket-IO, Jade and more.
 
-## Running Tests
-
-Express uses the [Expresso](http://github.com/visionmedia/expresso) TDD
-framework to write and run elegant test suites extremely fast. First `$ git submodule update --init`, then run:
-
-    $ make test
+## Node Compatibility
     
 The latest release of Express is compatible with node --version:
 
-    v0.1.100
-    
+    v0.1.104
+
+and connect --version:
+
+    0.2.4
+
 ## License 
 
 (The MIT License)

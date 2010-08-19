@@ -12,7 +12,7 @@ var sys = require('sys'),
  * Framework version.
  */
 
-var version = '1.0.0beta';
+var version = '1.0.0rc2';
 
 /**
  * Usage documentation.
@@ -39,13 +39,14 @@ var jadeLayout = [
 ].join('\n');
 
 /**
- * Default sass template.
+ * Default less template.
  */
 
-var sass = [
-    'body',
-    '  :padding 50px',
-    '  :font 14px "Lucida Grande", "Helvetica Nueue", Arial, sans-serif'
+var less = [
+    'body {',
+    '  padding: 50px;',
+    '  font: 14px "Lucida Grande", "Helvetica Nueue", Arial, sans-serif;',
+    '}'
 ].join('\n');
 
 /**
@@ -55,6 +56,32 @@ var sass = [
 var jadeIndex = [
     'h1= title',
     'p Welcome to #{title}'
+].join('\n');
+
+/**
+ * App test template.
+ */
+
+var appTest = [
+    "",
+    "// Run $ expresso",
+    "",
+    "/**",
+    " * Module dependencies.",
+    " */",
+    "",
+    "var app = require('../app');",
+    "",
+    "module.exports = {",
+    "    'GET /': function(assert){",
+    "        assert.response(app,",
+    "            { url: '/' },",
+    "            { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' }},",
+    "            function(res){",
+    "                assert.includes(res.body, '<title>Express</title>');",
+    "            });",
+    "    }",
+    "};",
 ].join('\n');
 
 /**
@@ -70,27 +97,25 @@ var app = [
     'var express = require(\'express\'),',
     '    connect = require(\'connect\');',
     '',
-    '// Create and export Express app',
-    '',
-    'var app = express.createServer();',
+    'var app = module.exports = express.createServer();',
     '',
     '// Configuration',
     '',
     'app.configure(function(){',
     '    app.set(\'views\', __dirname + \'/views\');',
-    '    app.use(\'/\', connect.bodyDecoder());',
-    '    app.use(\'/\', connect.methodOverride());',
-    '    app.use(\'/\', connect.compiler({ src: __dirname + \'/public\', enable: [\'sass\'] }));',
-    '    app.use(\'/\', connect.staticProvider(__dirname + \'/public\'));',
+    '    app.use(connect.bodyDecoder());',
+    '    app.use(connect.methodOverride());',
+    '    app.use(connect.compiler({ src: __dirname + \'/public\', enable: [\'less\'] }));',
+    '    app.use(app.router);',
+    '    app.use(connect.staticProvider(__dirname + \'/public\'));',
     '});',
     '',
     'app.configure(\'development\', function(){',
-    '    app.set(\'reload views\', 1000);',
-    '    app.use(\'/\', connect.errorHandler({ dumpExceptions: true, showStack: true })); ',
+    '    app.use(connect.errorHandler({ dumpExceptions: true, showStack: true })); ',
     '});',
     '',
     'app.configure(\'production\', function(){',
-    '   app.use(\'/\', connect.errorHandler()); ',
+    '   app.use(connect.errorHandler()); ',
     '});',
     '',
     '// Routes',
@@ -103,7 +128,9 @@ var app = [
     '    });',
     '});',
     '',
-    'app.listen(3000);',
+    '// Only listen on $ node app.js',
+    '',
+    'if (!module.parent) app.listen(3000);',
     ''
 ].join('\n');
 
@@ -133,12 +160,17 @@ while (args.length) {
     mkdir(path, function(){
         mkdir(path + '/pids');
         mkdir(path + '/logs');
-        mkdir(path + '/public/{javascripts,stylesheets,images}', function(){
-            write(path + '/public/stylesheets/style.sass', sass);
+        mkdir(path + '/public/javascripts');
+        mkdir(path + '/public/images');
+        mkdir(path + '/public/stylesheets', function(){
+            write(path + '/public/stylesheets/style.less', less);
         });
         mkdir(path + '/views/partials', function(){
             write(path + '/views/layout.jade', jadeLayout);
             write(path + '/views/index.jade', jadeIndex);
+        });
+        mkdir(path + '/test', function(){
+            write(path + '/test/app.test.js', appTest);
         });
         write(path + '/app.js', app);
     });

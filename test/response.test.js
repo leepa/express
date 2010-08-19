@@ -57,7 +57,7 @@ module.exports = {
             { body: 'wahoo!', headers: { 'Content-Type': 'application/octet-stream' }});
     },
     
-    'test #contentType': function(assert){
+    'test #contentType()': function(assert){
         var app = express.createServer();
         
         app.get('/html', function(req, res){
@@ -71,7 +71,7 @@ module.exports = {
             { body: '<p>yay</p>', headers: { 'Content-Type': 'text/html; charset=utf-8' }});
     },
     
-    'test #attachment': function(assert){
+    'test #attachment()': function(assert){
         var app = express.createServer();
         
         app.get('/style.css', function(req, res){
@@ -79,8 +79,8 @@ module.exports = {
             res.send('some stylezzz');
         });
 
-        app.get('/*', function(req, res, params){
-            res.attachment(params.splat[0]);
+        app.get('/*', function(req, res){
+            res.attachment(req.params[0]);
             res.send('whatever');
         });
         
@@ -100,9 +100,9 @@ module.exports = {
 
         app2.redirect('google', 'http://google.com');
 
-        app2.redirect('blog', function(req, res, params){
-            return params.id
-                ? '/user/' + params.id + '/blog'
+        app2.redirect('blog', function(req, res){
+            return req.params.id
+                ? '/user/' + req.params.id + '/blog'
                 : null;
         });
         
@@ -173,11 +173,17 @@ module.exports = {
     
     'test #sendfile()': function(assert){
         var app = express.createServer();
-        
-        app.get('/*', function(req, res, params){
-            var file = params.splat[0];
-            res.sendfile(__dirname + '/fixtures/' + file);
+
+        app.get('/*', function(req, res, next){
+            var file = req.params[0],
+                filePath = __dirname + '/fixtures/' + file;
+            res.sendfile(filePath, function(err, path){
+                assert.equal(path, filePath);
+                if (err) next(err);
+            });
         });
+        
+        app.use(express.errorHandler());
         
         assert.response(app,
             { url: '/user.json' },
@@ -187,7 +193,7 @@ module.exports = {
             { body: '%p Hello World', status: 200, headers: { 'Content-Type': 'application/octet-stream' }});
         assert.response(app,
             { url: '/doesNotExist' },
-            { body: 'Not Found', status: 404 });
+            { body: 'Internal Server Error', status: 500 });
         assert.response(app,
             { url: '/partials' },
             { body: 'Internal Server Error', status: 500 });
@@ -196,12 +202,15 @@ module.exports = {
     'test #download()': function(assert){
         var app = express.createServer();
         
-        app.get('/json', function(req, res, params, next){
-            res.download(__dirname + '/fixtures/user.json', 'account.json');
+        app.get('/json', function(req, res, next){
+            var filePath = __dirname + '/fixtures/user.json';
+            res.download(filePath, 'account.json', function(err, path){
+                assert.equal(filePath, path);
+            });
         });
 
-        app.get('/:file', function(req, res, params, next){
-            res.download(__dirname + '/fixtures/' + params.file);
+        app.get('/*', function(req, res, next){
+            res.download(__dirname + '/fixtures/' + req.params[0]);
         });
         
         assert.response(app,
