@@ -182,8 +182,8 @@ module.exports = {
         app.set('view engine', 'jade');
         
         app.get('/', function(req, res){
-            res.internal = '1';
-            res.method = function(){
+            req.internal = '1';
+            req.method = function(){
                 return this.internal;
             };
             res.render('scope.jade', { layout: false });
@@ -208,18 +208,56 @@ module.exports = {
             { body: '<p>2</p>'});
     },
     
-    'test #render() view helpers': function(assert){
+    'test #render() status': function(assert){
         var app = create();
+        
+        app.get('/', function(req, res){
+            res.render('hello.jade', {
+                layout: false,
+                status: 404
+            });
+        });
+        
+        assert.response(app,
+            { url: '/' },
+            { body: '<p>:(</p>', status: 404 });
+    },
+    
+    'test #render() headers': function(assert){
+        var app = create();
+        
+        app.get('/', function(req, res){
+            res.render('hello.jade', {
+                layout: false,
+                status: 500,
+                headers: {
+                    'X-Foo': 'bar'
+                }
+            });
+        });
+        
+        assert.response(app,
+            { url: '/' },
+            { body: '<p>:(</p>', status: 500, headers: {
+                'X-Foo': 'bar',
+                'Content-Type': 'text/html; charset=utf-8'
+            }});
+    },
+    
+    'test #render() view helpers': function(assert, beforeExit){
+        var app = create(),
+            calls = 0;
 
         app.helpers({ 
             lastName: 'holowaychuk',
-            foo: function(){
-               return 'bar'; 
+            greetings: function(sess, lastName){
+               return 'Hello ' + sess.name + ' ' + lastName; 
             }
         });
 
         var ret = app.dynamicHelpers({
             session: function(req, res){
+                ++calls;
                 assert.equal('object', typeof req, 'Test dynamic helper req');
                 assert.equal('object', typeof res, 'Test dynamic helper res');
                 assert.ok(this instanceof express.Server, 'Test dynamic helper app scope');
@@ -233,10 +271,13 @@ module.exports = {
             req.session = { name: 'tj' };
             res.render('dynamic-helpers.jade', { layout: false });
         });
+        app.get('/ejs', function(req, res){
+            req.session = { name: 'tj' };
+            res.render('dynamic-helpers.ejs', { layout: false });
+        });
         app.get('/precedence', function(req, res){
             req.session = { name: 'tj' };
             res.render('dynamic-helpers.jade', {
-                layout: false,
                 locals: {
                     lastName: 'foobar'
                 }
@@ -245,10 +286,17 @@ module.exports = {
         
         assert.response(app,
             { url: '/' },
-            { body: '<p>tj holowaychuk bar</p>' });
+            { body: '<p>Hello tj holowaychuk</p>' });
+        assert.response(app,
+            { url: '/ejs' },
+            { body: '<p>Hello tj holowaychuk</p>' });
         assert.response(app,
             { url: '/precedence' },
-            { body: '<p>tj foobar bar</p>' });
+            { body: '<html><body><p>Hello tj foobar</p></body></html>' });
+
+        beforeExit(function(){
+            assert.equal(3, calls);
+        });
     },
     
     'test #partial()': function(assert){
@@ -298,6 +346,18 @@ module.exports = {
             res.send(res.partial('user.jade', {
                 as: 'person',
                 collection: [{ name: 'tj' }]
+            }));
+        });
+        
+        assert.response(app,
+            { url: '/user' },
+            { body: '<p>tj</p>' });
+
+        // as: with object collection
+        app.get('/user/object', function(req, res){
+            res.send(res.partial('user.jade', {
+                as: 'person',
+                collection: { 0: { name: 'tj' }, length: 1 }
             }));
         });
         
@@ -386,6 +446,58 @@ module.exports = {
         assert.response(app,
             { url: '/nothing' },
             { body: 'Hello' });
+
+        // Path segments + "as"
+        app.get('/role/as', function(req, res){
+            res.send(res.partial('user/role.ejs', { as: 'role', collection: ['admin', 'member'] }));
+        });
+
+        assert.response(app,
+            { url: '/role/as' },
+            { body: '<li>Role: admin</li><li>Role: member</li>' });
+
+        // Deduce name from last segment
+        app.get('/role', function(req, res){
+            res.send(res.partial('user/role.ejs', ['admin', 'member']));
+        });
+
+        assert.response(app,
+            { url: '/role' },
+            { body: '<li>Role: admin</li><li>Role: member</li>' });
+    },
+    
+    'test #partial() with array-like collection': function(assert){
+        var app = create();
+
+        var movies = {
+            0: { title: 'Nightmare Before Christmas', director: 'Tim Burton' },
+            1: { title: 'Avatar', director: 'James Cameron' },
+            length: 2
+        };
+        app.get('/movies', function(req, res){
+            res.render('movies.jade', { locals: { movies: movies }});
+        });
+            
+        var html = [
+            '<html>',
+            '<body>',
+            '<ul>',
+            '<li>',
+            '<div class="title">Nightmare Before Christmas</div>',
+            '<div class="director">Tim Burton</div>',
+            '</li>',
+            '<li>',
+            '<div class="title">Avatar</div>',
+            '<div class="director">James Cameron</div>',
+            '</li>',
+            '</ul>',
+            '</body>',
+            '</html>'
+        ].join('');
+
+        assert.response(app,
+            { url: '/movies' },
+            { body: html });
     },
     
     'test "partials" setting': function(assert){

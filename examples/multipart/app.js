@@ -1,21 +1,24 @@
 
+// Expose modules in ./support for demo purposes
+require.paths.unshift(__dirname + '/../../support');
+
 /**
  * Module dependencies.
  */
 
-var express = require('./../../lib/express'),
-    form = require('./../../support/connect-form'),
+var express = require('../../lib/express'),
+    form = require('connect-form'),
     sys = require('sys');
 
 var app = express.createServer(
     // connect-form (http://github.com/visionmedia/connect-form)
     // middleware uses the formidable middleware to parse urlencoded
     // and multipart form data
-    form()
+    form({ keepExtensions: true })
 );
 
 app.get('/', function(req, res){
-    res.send('<form method="post" enctype="form-data/multipart">'
+    res.send('<form method="post" enctype="multipart/form-data">'
         + '<p>Image: <input type="file" name="image" /></p>'
         + '<p><input type="submit" value="Upload" /></p>'
         + '</form>');
@@ -30,7 +33,9 @@ app.post('/', function(req, res, next){
         if (err) {
             next(err);
         } else {
-            sys.puts('\nuploaded ' + files.image.filename);
+            console.log('\nuploaded %s to %s', 
+                files.image.filename,
+                files.image.path);
             res.redirect('back');
         }
     });
@@ -44,3 +49,4 @@ app.post('/', function(req, res, next){
 });
 
 app.listen(3000);
+console.log('Express app started on port 3000');

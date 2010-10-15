@@ -19,6 +19,13 @@ module.exports = {
             res.send({ foo: 'bar' }, { 'X-Foo': 'baz' }, 201);
         });
         
+        app.get('/jsonp', function(req, res){
+            app.enable('jsonp callback');
+            res.header('X-Foo', 'bar');
+            res.send({ foo: 'bar' }, { 'X-Foo': 'baz' }, 201);
+            app.disable('jsonp callback');
+        });
+        
         app.get('/text', function(req, res){
             res.header('X-Foo', 'bar');
             res.contentType('.txt');
@@ -36,6 +43,10 @@ module.exports = {
         app.get('/buffer', function(req, res){
             res.send(new Buffer('wahoo!'));
         });
+        
+        app.get('/noargs', function(req, res, next){
+            res.send();
+        });
 
         assert.response(app,
             { url: '/html' },
@@ -43,6 +54,19 @@ module.exports = {
         assert.response(app,
             { url: '/json' },
             { body: '{"foo":"bar"}', status: 201, headers: { 'Content-Type': 'application/json', 'X-Foo': 'baz' }});
+
+        assert.response(app,
+            { url: '/jsonp?callback=test' },
+            { body: 'test({"foo":"bar"});', status: 201, headers: { 'Content-Type': 'application/json', 'X-Foo': 'baz' }});
+
+        assert.response(app,
+            { url: '/jsonp?callback=baz' },
+            { body: 'baz({"foo":"bar"});', status: 201, headers: { 'Content-Type': 'application/json', 'X-Foo': 'baz' }});
+
+        assert.response(app,
+            { url: '/json?callback=test' },
+            { body: '{"foo":"bar"}', status: 201, headers: { 'Content-Type': 'application/json', 'X-Foo': 'baz' }});
+
         assert.response(app,
             { url: '/text' },
             { body: 'wahoo', headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Foo': 'bar' }});
@@ -55,6 +79,12 @@ module.exports = {
         assert.response(app,
             { url: '/buffer' },
             { body: 'wahoo!', headers: { 'Content-Type': 'application/octet-stream' }});
+        assert.response(app,
+            { url: '/noargs' },
+            { status: 204 }, function(res){
+                assert.equal(undefined, res.headers['content-type']);
+                assert.equal(undefined, res.headers['content-length']);
+            });
     },
     
     'test #contentType()': function(assert){
@@ -135,44 +165,47 @@ module.exports = {
         });
 
         app2.get('/user/:id', function(req, res){
+            res.header('X-Foo', 'bar');
             res.redirect('blog');
         });
         
         assert.response(app,
             { url: '/' },
-            { body: '', status: 301, headers: { Location: 'http://google.com' }});
+            { body: 'Redirecting to http://google.com', status: 301, headers: { Location: 'http://google.com' }});
         assert.response(app,
             { url: '/back' },
-            { body: '', status: 302, headers: { Location: '/' }});
+            { body: 'Redirecting to /', status: 302, headers: { Location: '/', 'Content-Type': 'text/plain' }});
         assert.response(app,
             { url: '/back', headers: { Referer: '/foo' }},
-            { body: '', status: 302, headers: { Location: '/foo' }});
+            { body: 'Redirecting to /foo', status: 302, headers: { Location: '/foo' }});
         assert.response(app,
             { url: '/back', headers: { Referrer: '/foo' }},
-            { body: '', status: 302, headers: { Location: '/foo' }});
+            { body: 'Redirecting to /foo', status: 302, headers: { Location: '/foo' }});
         assert.response(app,
             { url: '/home' },
-            { body: '', status: 302, headers: { Location: '/' }});
+            { body: 'Redirecting to /', status: 302, headers: { Location: '/' }});
 
         assert.response(app2,
             { url: '/' },
-            { body: '', status: 301, headers: { Location: 'http://google.com' }});
+            { body: 'Redirecting to http://google.com', status: 301, headers: { Location: 'http://google.com' }});
         assert.response(app2,
             { url: '/back' },
-            { body: '', status: 302, headers: { Location: '/blog' }});
+            { body: 'Redirecting to /blog', status: 302, headers: { Location: '/blog' }});
         assert.response(app2,
             { url: '/home' },
-            { body: '', status: 302, headers: { Location: '/blog' }});
+            { body: 'Redirecting to /blog', status: 302, headers: { Location: '/blog' }});
         assert.response(app2,
             { url: '/google' },
-            { body: '', headers: { Location: 'http://google.com' }});
+            { body: 'Redirecting to http://google.com', headers: { Location: 'http://google.com' }});
         assert.response(app2,
             { url: '/user/12' },
-            { body: '', headers: { Location: '/user/12/blog' }});
+            { body: 'Redirecting to /user/12/blog', headers: { Location: '/user/12/blog', 'X-Foo': 'bar' }});
     },
     
     'test #sendfile()': function(assert){
         var app = express.createServer();
+
+        app.set('stream threshold', 2 * 1024)
 
         app.get('/*', function(req, res, next){
             var file = req.params[0],
@@ -184,7 +217,10 @@ module.exports = {
         });
         
         app.use(express.errorHandler());
-        
+
+        assert.response(app,
+            { url: '/../express.test.js' },
+            { body: 'Forbidden', status: 403 });
         assert.response(app,
             { url: '/user.json' },
             { body: '{"name":"tj"}', status: 200, headers: { 'Content-Type': 'application/json' }});
@@ -197,6 +233,83 @@ module.exports = {
         assert.response(app,
             { url: '/partials' },
             { body: 'Internal Server Error', status: 500 });
+        assert.response(app,
+            { url: '/large.json' },
+            { status: 200, headers: { 'Content-Length': 2535, 'Content-Type': 'application/json' }});
+    },
+    
+    'test #sendfile() Accept-Ranges': function(assert){
+        var app = express.createServer();
+        
+        app.set('stream threshold', 1024);
+        
+        app.get('/*', function(req, res, next){
+            var file = req.params[0],
+                path = __dirname + '/fixtures/' + file;
+            res.sendfile(path);
+        });
+        
+        assert.response(app,
+            { url: '/large.json' },
+            { headers: { 'Accept-Ranges': 'bytes' }});
+    },
+    
+    'test #sendfile() Range': function(assert){
+        var app = express.createServer();
+        
+        app.set('stream threshold', 1024);
+        
+        app.get('/*', function(req, res, next){
+            var file = req.params[0],
+                path = __dirname + '/fixtures/' + file;
+            res.sendfile(path);
+        });
+
+        assert.response(app,
+            { url: '/large.json', headers: { 'Range': 'bytes=0-499' }},
+            { headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': 500,
+                'Content-Range': 'bytes 0-499/2535'
+            }, status: 206 });
+    },
+
+    'test #sendfile() Range invalid syntax': function(assert){
+        var app = express.createServer();
+        
+        app.set('stream threshold', 1024);
+        
+        app.get('/*', function(req, res, next){
+            var file = req.params[0],
+                path = __dirname + '/fixtures/' + file;
+            res.sendfile(path);
+        });
+
+        assert.response(app,
+            { url: '/large.json', headers: { 'Range': 'basdytes=asdf' }},
+            { headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': 2535
+            }, status: 200 });
+    },
+  
+    'test #sendfile() Range invalid range': function(assert){
+        var app = express.createServer();
+        
+        app.set('stream threshold', 1024);
+        
+        app.get('/*', function(req, res, next){
+            var file = req.params[0],
+                path = __dirname + '/fixtures/' + file;
+            res.sendfile(path);
+        });
+
+        assert.response(app,
+            { url: '/large.json', headers: { 'Range': 'bytes=500-10' }},
+            { headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': 2535
+            }, status: 200 });
     },
     
     'test #download()': function(assert){
@@ -213,6 +326,10 @@ module.exports = {
             res.download(__dirname + '/fixtures/' + req.params[0]);
         });
         
+        app.error(function(err, req, res){
+            res.send(404);
+        })
+        
         assert.response(app,
             { url: '/user.json' },
             { body: '{"name":"tj"}', status: 200, headers: {
@@ -224,7 +341,60 @@ module.exports = {
             { url: '/json' },
             { body: '{"name":"tj"}', status: 200, headers: {
                 'Content-Type': 'application/json',
+                'Content-Length': '13',
                 'Content-Disposition': 'attachment; filename="account.json"'
             }});
+        
+        assert.response(app,
+            { url: '/missing' },
+            function(res){
+                assert.equal(null, res.headers['content-disposition']);
+            });
+    },
+    
+    'test #cookie()': function(assert){
+        var app = express.createServer();
+        
+        app.get('/', function(req, res){
+            res.cookie('rememberme', 'yes', { expires: new Date(1), httpOnly: true });
+            res.redirect('/');
+        });
+        
+        assert.response(app,
+            { url: '/' },
+            function(res){
+                assert.equal(
+                    'rememberme=yes; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly',
+                    res.headers['set-cookie']);
+            });
+    },
+    
+    'test #clearCookie()': function(assert){
+        var app = express.createServer();
+        
+        app.get('/', function(req, res){
+            res.clearCookie('rememberme');
+            res.redirect('/');
+        });
+        
+        assert.response(app,
+            { url: '/' },
+            function(res){
+                assert.equal(
+                    'rememberme=; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+                    res.headers['set-cookie']);
+            });
+    },
+    
+    'test HEAD': function(assert){
+        var app = express.createServer();
+        
+        app.get('/', function(req, res, next){
+            res.send('Hello World');
+        });
+        
+        assert.response(app,
+            { url: '/', method: 'HEAD' },
+            { body: '', headers: { 'Content-Length': 11 }});
     }
 };

@@ -37,7 +37,7 @@ uninstall-docs:
 	rm -f $(PREFIX)/share/man/man1/express.1
 
 test:
-	@CONNECT_ENV=test ./support/expresso/bin/expresso \
+	@NODE_ENV=test ./support/expresso/bin/expresso \
 		-I lib \
 		-I support/connect/lib \
 		-I support/haml/lib \
@@ -45,6 +45,7 @@ test:
 		-I support/ejs/lib \
 		$(TESTFLAGS) \
 		test/*.test.js
+
 test-cov:
 	@TESTFLAGS=--cov $(MAKE) test
 
@@ -53,7 +54,9 @@ docs: docs/api.html $(MANPAGES) $(HTMLDOCS)
 	@./support/toc.js docs/guide.html
 
 docs/api.html: lib/express/*.js
-	dox --title Express \
+	dox \
+		--private \
+		--title Express \
 		--desc "High performance web framework for [node](http://nodejs.org)." \
 		$(shell find lib/express/* -type f) > $@
 

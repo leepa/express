@@ -26,6 +26,14 @@ module.exports = {
             res.end('updated user ' + req.params.id)
         });
 
+        server.del('/something', function(req, res){
+            res.send('Destroyed');
+        });
+
+        server.delete('/something/else', function(req, res){
+            res.send('Destroyed');
+        });
+
         assert.response(server,
             { url: '/' },
             { body: 'wahoo' });
@@ -33,6 +41,14 @@ module.exports = {
         assert.response(server,
             { url: '/user/12', method: 'PUT' },
             { body: 'updated user 12' });
+
+        assert.response(server,
+          { url: '/something', method: 'DELETE' },
+          { body: 'Destroyed' });
+
+        assert.response(server,
+          { url: '/something/else', method: 'DELETE' },
+          { body: 'Destroyed' });
     },
     
     'test constructor middleware': function(assert, beforeExit){
@@ -162,7 +178,7 @@ module.exports = {
     
     'test #configure()': function(assert, beforeExit){
         var calls = [];
-        process.env.EXPRESS_ENV = 'development';
+        process.env.NODE_ENV = 'development';
         var server = express.createServer();
         
         // Config blocks
@@ -288,6 +304,11 @@ module.exports = {
         assert.equal('/blog', blog.route);
         assert.equal('/contact', map.route);
         assert.ok(called, 'mounted() hook failed');
+
+        app.set("test", "parent setting");
+        assert.equal(blog.set("test"), "parent setting", "settings did not inherit from parent app")
+        blog.set("test", "overridden");
+        assert.equal(blog.set("test"), "overridden", "mounted app setting did not override parent app")
         
         app.get('/', function(req, res){
             assert.equal('/', app.set('home'), "home did not default to /");
@@ -316,5 +337,55 @@ module.exports = {
         assert.response(blog,
             { url: '/' },
             { body: 'blog index' });
+    },
+    
+    'test route middleware': function(assert){
+        var app = express.createServer();
+
+        function allow(role) {
+            return function(req, res, next) {
+                // this is totally not real, dont use this :)
+                // for tests only
+                if (req.headers['x-role'] == role) {
+                    next();
+                } else {
+                    res.send(401);
+                }
+            }
+        }
+        
+        function restrictAge(age) {
+            return function(req, res, next){
+                if (req.headers['x-age'] >= age) {
+                    next();
+                } else {
+                    res.send(403);
+                }
+            }
+        }
+
+        app.get('/xxx', allow('member'), restrictAge(18), function(req, res){
+            res.send(200);
+        });
+
+        app.get('/booze', [allow('member')], restrictAge(18), function(req, res){
+            res.send(200);
+        });
+
+        app.get('/tobi', [allow('member')], [[restrictAge(18)]], function(req, res){
+            res.send(200);
+        });
+
+        ['xxx', 'booze', 'tobi'].forEach(function(thing){
+            assert.response(app,
+                { url: '/' + thing },
+                { body: 'Unauthorized', status: 401 });
+            assert.response(app,
+                { url: '/' + thing, headers: { 'X-Role': 'member' }},
+                { body: 'Forbidden', status: 403 });
+            assert.response(app,
+                { url: '/' + thing, headers: { 'X-Role': 'member', 'X-Age': 18 }},
+                { body: 'OK', status: 200 });
+        });
     }
 };

@@ -1,4 +1,46 @@
 
+1.0.0rc4 / 2010-10-14 
+==================
+
+  * Added _NODE_ENV_ support, _EXPRESS_ENV_ is deprecated and will be removed in 1.0.0
+  * Added route-middleware support (very helpful, see the [docs](http://expressjs.com/guide.html#Route-Middleware))
+  * Added _jsonp callback_ setting to enable/disable jsonp autowrapping [Dav Glass]
+  * Added callback query check on response.send to autowrap JSON objects for simple webservice implementations [Dav Glass]
+  * Added `partial()` support for array-like collections. Closes #434
+  * Added support for swappable querystring parsers
+  * Added session usage docs. Closes #443
+  * Added dynamic helper caching. Closes #439 [suggested by maritz]
+  * Added authentication example
+  * Added basic Range support to `res.sendfile()` (and `res.download()` etc)
+  * Changed; `express(1)` generated app using 2 spaces instead of 4
+  * Default env to "development" again [aheckmann]
+  * Removed _context_ option is no more, use "scope"
+  * Fixed; exposing _./support_ libs to examples so they can run without installs
+  * Fixed mvc example
+
+1.0.0rc3 / 2010-09-20 
+==================
+
+  * Added confirmation for `express(1)` app generation. Closes #391
+  * Added extending of flash formatters via `app.flashFormatters`
+  * Added flash formatter support. Closes #411
+  * Added streaming support to `res.sendfile()` using `sys.pump()` when >= "stream threshold"
+  * Added _stream threshold_ setting for `res.sendfile()`
+  * Added `res.send()` __HEAD__ support
+  * Added `res.clearCookie()`
+  * Added `res.cookie()`
+  * Added `res.render()` headers option
+  * Added `res.redirect()` response bodies
+  * Added `res.render()` status option support. Closes #425 [thanks aheckmann]
+  * Fixed `res.sendfile()` responding with 403 on malicious path
+  * Fixed `res.download()` bug; when an error occurs remove _Content-Disposition_
+  * Fixed; mounted apps settings now inherit from parent app [aheckmann]
+  * Fixed; stripping Content-Length / Content-Type when 204
+  * Fixed `res.send()` 204. Closes #419
+  * Fixed multiple _Set-Cookie_ headers via `res.header()`. Closes #402
+  * Fixed bug messing with error handlers when `listenFD()` is called instead of `listen()`. [thanks guillermo]
+
+
 1.0.0rc2 / 2010-08-17 
 ==================
 
