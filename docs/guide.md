@@ -74,6 +74,8 @@ To alter the environment we can set the _NODE_ENV_ environment variable, for exa
 
     $ NODE_ENV=production node app.js
 
+This is _very_ important, as many caching mechanisms are _only enabled_ when in production.
+
 ### Settings
 
 Express supports the following settings out of the box:
@@ -489,9 +491,9 @@ By default the _session_ middleware uses the memory store bundled with Connect, 
 Now the _req.session_ and _req.sessionStore_ properties will be accessible to all routes and subsequent middleware. Properties on _req.session_ are automatically saved on a response, so for example if we wish to shopping cart data:
 
     var RedisStore = require('connect-redis');
+    app.use(express.bodyDecoder());
     app.use(express.cookieDecoder());
     app.use(express.session({ store: new RedisStore }));
-    app.use(express.bodyDecoder());
 
     app.post('/add-to-cart', function(req, res){
       // Perhaps we posted several items with a form
@@ -512,6 +514,10 @@ Now the _req.session_ and _req.sessionStore_ properties will be accessible to al
     });
 
 The _req.session_ object also has methods such as _Session#touch()_, _Session#destroy()_, _Session#regenerate()_ among others to maintain and manipulate sessions. For more information view the [Connect Session](http://senchalabs.github.com/connect/session.html) documentation.
+
+### Migration Guide
+
+ Pre-beta Express developers may reference the [Migration Guide](migrate.html) to get up to speed on how to upgrade your application.
 
 ### req.header(key[, defaultValue])
 
@@ -544,6 +550,55 @@ to "text/html" using the mime lookup table.
     req.accepts('image/png');
     req.accepts('png');
     // => false
+
+### req.is(type)
+
+Check if the incoming request contains the _Content-Type_
+header field, and it contains the give mime _type_.
+ 
+       // With Content-Type: text/html; charset=utf-8
+       req.is('html');
+       req.is('text/html');
+       // => true
+       
+       // When Content-Type is application/json
+       req.is('json');
+       req.is('application/json');
+       // => true
+       
+       req.is('html');
+       // => false
+  
+Ad-hoc callbacks can also be registered with Express, to perform
+assertions again the request, for example if we need an expressive
+way to check if our incoming request is an image, we can register _"an image"_
+callback:
+  
+        app.is('an image', function(req){
+          return 0 == req.headers['content-type'].indexOf('image');
+        });
+  
+Now within our route callbacks, we can use to to assert content types
+such as _"image/jpeg"_, _"image/png"_, etc.
+  
+       app.post('/image/upload', function(req, res, next){
+         if (req.is('an image')) {
+           // do something
+         } else {
+           next();
+         }
+       });
+
+Keep in mind this method is _not_ limited to checking _Content-Type_, you
+can perform any request assertion you wish.
+
+Wildcard matches can also be made, simplifying our example above for _"an image"_, by asserting the _subtype_ only:
+
+    req.is('image/*');
+
+We may also assert the _type_ as shown below, which would return true for _"application/json"_, and _"text/json"_.
+
+    req.is('*/json');
 
 ### req.param(name)
 
@@ -717,7 +772,8 @@ automatically, however otherwise a response of _200_ and _text/html_ is given.
 Render _view_ partial with the given _options_. This method is always available
 to the view as a local variable.
 
-- _as_ Variable name for each _collection_ value, defaults to the view name.
+- _object_ the object named by _as_ or derived from the view name
+- _as_ Variable name for each _collection_ or _object_ value, defaults to the view name.
   * as: 'something' will add the _something_ local variable
   * as: this will use the collection value as the template context
   * as: global will merge the collection value's properties with _locals_
@@ -749,8 +805,27 @@ of _movie.director_ we could use _this.director_.
 Another alternative is to "explode" the properties of the collection item into
 pseudo globals (local variables) by using _as: global_, which again is syntactic sugar:
 
-    partials('movie', { collection: movies, as: global });
+    partial('movie', { collection: movies, as: global });
     // In view: director
+
+This same logic applies to a single partial object usage:
+
+    partial('movie', { object: movie, as: this });
+    // In view: this.director
+
+    partial('movie', { object: movie, as: global });
+    // In view: director
+
+    partial('movie', { object: movie, as: 'video' });
+    // In view: video.director
+
+    partial('movie', { object: movie });
+    // In view: movie.director
+
+When a non-collection (does _not_ have _.length_) is passed as the second argument, it is assumed to be the _object_, after which the object's local variable name is derived from the view name:
+
+    partial('movie', movie);
+    // => In view: movie.director
 
 ### app.set(name[, val])
 
@@ -759,6 +834,11 @@ get the value of _name_ when _val_ is not present:
 
     app.set('views', __dirname + '/views');
     app.set('views');
+    // => ...path...
+
+Alternatively you may simply access the settings via _app.settings_:
+
+    app.settings.views
     // => ...path...
 
 ### app.enable(name)

@@ -131,6 +131,9 @@ $ NODE_ENV=production node app\.js
 .
 .IP "" 0
 .
+.P
+This is \fIvery\fR important, as many caching mechanisms are \fIonly enabled\fR when in production\.
+.
 .SS "Settings"
 Express supports the following settings out of the box:
 .
@@ -828,7 +831,7 @@ And once again even further, when rendering a collection we can simply pass an a
 .
 .nf
 
-partial(\'comments\', comments);
+partial(\'comment\', comments);
 .
 .fi
 .
@@ -846,7 +849,13 @@ When using the partial collection support a few "magic" variables are provided f
 .IP "\(bu" 4
 \fIlastInCollection\fR True if this is the last object
 .
+.IP "\(bu" 4
+\fIcollectionLength\fR Length of the collection
+.
 .IP "" 0
+.
+.P
+For documentation on altering the object name view res\.partial() \fIhttp://expressjs\.com/guide\.html#res\-partial\-view\-options\-\fR\.
 .
 .SS "Template Engines"
 Below are a few template engines commonly used with Express:
@@ -859,6 +868,9 @@ Haml \fIhttp://github\.com/visionmedia/haml\.js\fR pythonic indented templates
 .
 .IP "\(bu" 4
 EJS \fIhttp://github\.com/visionmedia/ejs\fR Embedded JavaScript
+.
+.IP "\(bu" 4
+CoffeeKup \fIhttp://github\.com/mauricemach/coffeekup\fR CoffeeScript based templating
 .
 .IP "" 0
 .
@@ -899,9 +911,9 @@ Now the \fIreq\.session\fR and \fIreq\.sessionStore\fR properties will be access
 .nf
 
 var RedisStore = require(\'connect\-redis\');
+app\.use(express\.bodyDecoder());
 app\.use(express\.cookieDecoder());
 app\.use(express\.session({ store: new RedisStore }));
-app\.use(express\.bodyDecoder());
 
 app\.post(\'/add\-to\-cart\', function(req, res){
   // Perhaps we posted several items with a form
@@ -927,6 +939,9 @@ app\.get(\'/add\-to\-cart\', function(req, res){
 .
 .P
 The \fIreq\.session\fR object also has methods such as \fISession#touch()\fR, \fISession#destroy()\fR, \fISession#regenerate()\fR among others to maintain and manipulate sessions\. For more information view the Connect Session \fIhttp://senchalabs\.github\.com/connect/session\.html\fR documentation\.
+.
+.SS "Migration Guide"
+Pre\-beta Express developers may reference the Migration Guide \fImigrate\.html\fR to get up to speed on how to upgrade your application\.
 .
 .SS "req\.header(key[, defaultValue])"
 Get the case\-insensitive request header \fIkey\fR, with optional \fIdefaultValue\fR:
@@ -967,6 +982,93 @@ req\.accepts(\'application/json\');
 req\.accepts(\'image/png\');
 req\.accepts(\'png\');
 // => false
+.
+.fi
+.
+.IP "" 0
+.
+.SS "req\.is(type)"
+Check if the incoming request contains the \fIContent\-Type\fR header field, and it contains the give mime \fItype\fR\.
+.
+.IP "" 4
+.
+.nf
+
+   // With Content\-Type: text/html; charset=utf\-8
+   req\.is(\'html\');
+   req\.is(\'text/html\');
+   // => true
+
+   // When Content\-Type is application/json
+   req\.is(\'json\');
+   req\.is(\'application/json\');
+   // => true
+
+   req\.is(\'html\');
+   // => false
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Ad\-hoc callbacks can also be registered with Express, to perform assertions again the request, for example if we need an expressive way to check if our incoming request is an image, we can register \fI"an image"\fR callback:
+.
+.IP "" 4
+.
+.nf
+
+    app\.is(\'an image\', function(req){
+      return 0 == req\.headers[\'content\-type\']\.indexOf(\'image\');
+    });
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Now within our route callbacks, we can use to to assert content types such as \fI"image/jpeg"\fR, \fI"image/png"\fR, etc\.
+.
+.IP "" 4
+.
+.nf
+
+   app\.post(\'/image/upload\', function(req, res, next){
+     if (req\.is(\'an image\')) {
+       // do something
+     } else {
+       next();
+     }
+   });
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Keep in mind this method is \fInot\fR limited to checking \fIContent\-Type\fR, you can perform any request assertion you wish\.
+.
+.P
+Wildcard matches can also be made, simplifying our example above for \fI"an image"\fR, by asserting the \fIsubtype\fR only:
+.
+.IP "" 4
+.
+.nf
+
+req\.is(\'image/*\');
+.
+.fi
+.
+.IP "" 0
+.
+.P
+We may also assert the \fItype\fR as shown below, which would return true for \fI"application/json"\fR, and \fI"text/json"\fR\.
+.
+.IP "" 4
+.
+.nf
+
+req\.is(\'*/json\');
 .
 .fi
 .
@@ -1291,6 +1393,8 @@ The following are equivalent, and the name of collection value when passed to th
 .
 .nf
 
+partial(\'theatre/movie\.jade\', { collection: movies });
+partial(\'theatre/movie\.jade\', movies);
 partial(\'movie\.jade\', { collection: movies });
 partial(\'movie\.jade\', movies);
 partial(\'movie\', movies);

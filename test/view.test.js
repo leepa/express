@@ -466,6 +466,103 @@ module.exports = {
             { body: '<li>Role: admin</li><li>Role: member</li>' });
     },
     
+    'test #partial() locals': function(assert){
+        var app = create();
+
+        app.get('/', function(req, res, next){
+            res.send(res.partial('pet-count.jade', {
+              locals: {
+                pets: {
+                  length: 5
+                }
+              }
+            }));
+        });
+
+        assert.response(app,
+            { url: '/' },
+            { body: 'We have 5 cool pets\n' });
+    },
+    
+    'test #partial() locals precedence': function(assert){
+        var app = create();
+
+        app.get('/', function(req, res, next){
+            res.render('greetings.jade', {
+              locals: {
+                  name: 'TJ'
+                , otherName: 'Overridden'
+              }
+            });
+        });
+
+        assert.response(app,
+            { url: '/' },
+            { body: '<html><body><h1>TJ</h1><p>Welcome Overridden</p></body></html>' });
+    },
+    
+    'test #partial() object': function(assert){
+        var app = create();
+
+        app.get('/', function(req, res, next){
+            res.send(res.partial('movie.jade', {
+                title: 'Foobar'
+              , director: 'Tim Burton'
+            }));
+        });
+
+        assert.response(app,
+            { url: '/' },
+            { body: '<li><div class="title">Foobar</div><div class="director">Tim Burton</div></li>' });
+    },
+    
+    'test #partial() locals with collection': function(assert){
+        var app = create();
+
+        app.get('/', function(req, res, next){
+            res.render('pet-land.jade', {
+                locals: {
+                    pets: ['Ewald']
+                }
+            });
+        });
+
+        assert.response(app,
+            { url: '/' },
+            { body: '<html><body><div><li>Ewald is the coolest of Animal land</li></div></body></html>' });
+    },
+    
+    'test #partial() inheriting initial locals': function(assert){
+        var app = create();
+
+        app.get('/pets', function(req, res, next){
+            res.render('pets.jade', {
+                locals: {
+                    site: 'My Cool Pets',
+                    pets: ['Tobi', 'Jane', 'Bandit']
+                }
+            });
+        });
+
+        var html = [
+            '<html>',
+            '<body>',
+            '<h1>My Cool Pets</h1>',
+            '<p>We have 3 cool pets\n</p>',
+            '<ul>',
+            '<li>Tobi is the coolest of My Cool Pets</li>',
+            '<li>Jane</li>',
+            '<li>Bandit</li>',
+            '</ul>',
+            '</body>',
+            '</html>'
+        ].join('');
+
+        assert.response(app,
+            { url: '/pets' },
+            { body: html });
+    },
+    
     'test #partial() with array-like collection': function(assert){
         var app = create();
 

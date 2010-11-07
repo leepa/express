@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "EXECUTABLE" "" "July 2010" "" ""
+.TH "EXECUTABLE" "" "October 2010" "" ""
 .
 .SH "NAME"
 \fBexecutable\fR
@@ -10,7 +10,7 @@
 .
 .nf
 
-express [\-h|\-\-help] [\-v|\-\-version] [PATH]
+express [\-h|\-\-help] [\-v|\-\-version] [\-c|\-css ENGINE] [PATH]
 .
 .fi
 .
@@ -21,6 +21,8 @@ The \fBexpress\fR executable generates apps at the given \fBPATH\fR or the curre
 .
 .nf
 
+\-s, \-\-sessions        Add session support
+\-c, \-\-css ENGINE      Add css ENGINE support (less|sass)\. Defaults to plain css
 \-v, \-\-version         Output framework version
 \-h, \-\-help            Display help information
 .
