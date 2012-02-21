@@ -9,7 +9,7 @@
 	url = git://github.com/visionmedia/ejs.git
 [submodule "support/connect-form"]
 	path = support/connect-form
-	url = git://github.com/visionmedia/connect-form.git
+	url = git://github.com/leepa/connect-form.git
 [submodule "support/connect"]
 	path = support/connect
 	url = git://github.com/senchalabs/connect.git
